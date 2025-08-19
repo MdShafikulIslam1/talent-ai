@@ -1,0 +1,112 @@
+"use client";
+
+import Empty from "@/components/empty";
+import Heading from "@/components/heading";
+import Loader from "@/components/loader";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { userProModal } from "@/hooks/user-pro-modal";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { Video } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { formSchema } from "./constant";
+
+const VideoPage = () => {
+  const proModal = userProModal();
+  const [video, setVideo] = useState<string>();
+  const router = useRouter();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      prompt: "",
+    },
+  });
+
+  const isLoading = form.formState.isSubmitting;
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      setVideo(undefined);
+      const response = await axios.post("/api/video", data);
+      setVideo(response.data[0]);
+      form.reset();
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
+    } finally {
+      router.refresh();
+    }
+  };
+
+  return (
+    <div>
+      <Heading
+        title="Video Generation"
+        description="generate video you want to play"
+        icon={Video}
+        iconColor="text-orange-700"
+        bgColor="bg-orange-700/10"
+      />
+      <div className="px-4 lg:px-8 mb-8">
+        <div>
+          {" "}
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-full p-4 px-3 md:px-6 border rounded-lg focus-within:shadow-sm grid grid-cols-12 gap-2"
+            >
+              <FormField
+                name="prompt"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-10">
+                    <FormControl className="m-0 p-0">
+                      <Input
+                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                        disabled={isLoading}
+                        placeholder="create a video with a text?"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <Button
+                className="col-span-12 lg:col-span-2 w-full"
+                disabled={isLoading}
+              >
+                Generate
+              </Button>
+            </form>
+          </Form>
+        </div>
+        {/* message contents */}
+        <div className="mt-4 space-y-4">
+          {/* show loading when ai is generating */}
+          {isLoading && (
+            <div className="p-8 w-full rounded-lg flex items-center justify-center bg-muted">
+              <Loader isLoading={isLoading} />
+            </div>
+          )}
+          {/* show empty state if no conversation */}
+          {!video && !isLoading && <Empty title="No video is started" />}
+          {video && (
+            <video
+              controls
+              className="w-full mt-8 aspect-video rounded-lg border bg-black"
+            >
+              <source src={video} />
+            </video>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default VideoPage;
