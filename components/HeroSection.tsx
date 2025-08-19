@@ -105,7 +105,7 @@ export function HeroSection() {
 
             {/* Animated Heading */}
             <h1
-              className="text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight animate-scale-in"
+              className="text-3xl md:text-4xl font-bold mb-6 leading-tight tracking-tight animate-scale-in"
               style={{ animationDelay: "0.3s" }}
             >
               <span className="relative inline-block">
@@ -129,7 +129,7 @@ export function HeroSection() {
               className="animate-slide-up mb-8"
               style={{ animationDelay: "0.5s" }}
             >
-              <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 leading-relaxed font-light">
+              <p className="text-xl  text-slate-600 dark:text-slate-400 leading-relaxed font-light">
                 <span
                   className="inline-block animate-fade-in"
                   style={{ animationDelay: "0.6s" }}
@@ -213,7 +213,7 @@ export function HeroSection() {
             }`}
             style={{ animationDelay: "0.4s" }}
           >
-            <div className="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-2xl">
+            <div className="relative w-full h-[300px] rounded-3xl overflow-hidden shadow-2xl">
               {/* Carousel Images */}
               <div className="relative w-full h-full">
                 {carouselImages.map((image, index) => (

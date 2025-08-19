@@ -63,7 +63,7 @@ export function Footer() {
         </div>
         
         <div className="border-t border-border/40 pt-8 text-center text-muted-foreground">
-          <p>&copy; 2024 Talent-AI. All rights reserved.</p>
+          <p>&copy; 2025 Talent-AI. All rights reserved.</p>
         </div>
       </div>
     </footer>

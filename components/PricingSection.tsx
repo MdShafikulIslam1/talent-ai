@@ -132,10 +132,10 @@ export function PricingSection() {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-20 animate-slide-up">
-          <h2 className="text-5xl md:text-7xl font-black mb-8 gradient-text ">
+          <h2 className="text-2xl md:text-4xl font-black mb-4 gradient-text ">
             Choose Your Plan
           </h2>
-          <p className="text-2xl md:text-3xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
             Unlock the power of AI with plans designed for
             <span className="gradient-text font-semibold"> every need</span>
           </p>
