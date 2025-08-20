@@ -1,7 +1,21 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Volume2, Play, Pause, Download, Copy, Trash2, FileText, Sparkles, Loader2, VolumeX, RotateCcw } from "lucide-react";
+import {
+  Volume2,
+  Play,
+  Pause,
+  Download,
+  Copy,
+  Trash2,
+  FileText,
+  Sparkles,
+  Loader2,
+  VolumeX,
+  RotateCcw,
+} from "lucide-react";
+import { voices } from "@/const";
+import { toast } from "sonner";
 
 export default function TextToAudioPage() {
   const [text, setText] = useState("");
@@ -10,20 +24,10 @@ export default function TextToAudioPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [voice, setVoice] = useState("alloy");
+  const [voice, setVoice] = useState("Fritz-PlayAI");
   const [speed, setSpeed] = useState(1.0);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  const voices = [
-    { id: "alloy", name: "Alloy", description: "Balanced and natural" },
-    { id: "echo", name: "Echo", description: "Warm and expressive" },
-    { id: "fable", name: "Fable", name_bn: "Fable", description: "Clear and articulate" },
-    { id: "onyx", name: "Onyx", description: "Deep and authoritative" },
-    { id: "nova", name: "Nova", description: "Bright and energetic" },
-    { id: "shimmer", name: "Shimmer", description: "Gentle and soothing" }
-  ];
-
   const speeds = [
     { value: 0.25, label: "0.25x" },
     { value: 0.5, label: "0.5x" },
@@ -31,17 +35,17 @@ export default function TextToAudioPage() {
     { value: 1.0, label: "1x" },
     { value: 1.25, label: "1.25x" },
     { value: 1.5, label: "1.5x" },
-    { value: 2.0, label: "2x" }
+    { value: 2.0, label: "2x" },
   ];
 
   const handleGenerateAudio = async () => {
     if (!text.trim()) {
-      alert("Please enter some text to convert!");
+      toast.error("Please enter some text to convert!");
       return;
     }
 
     if (text.length > 4000) {
-      alert("Text is too long! Maximum 4000 characters allowed.");
+      toast.error("Text is too long! Maximum 4000 characters allowed.");
       return;
     }
 
@@ -51,15 +55,15 @@ export default function TextToAudioPage() {
     setDuration(0);
 
     try {
-      const response = await fetch('/api/text-to-audio', {
-        method: 'POST',
+      const response = await fetch("/api/text-to-audio", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           text: text.trim(),
           voice: voice,
-          speed: speed
+          speed: speed,
         }),
       });
 
@@ -67,17 +71,17 @@ export default function TextToAudioPage() {
         const audioBlob = await response.blob();
         const url = URL.createObjectURL(audioBlob);
         setAudioURL(url);
-        alert("Audio generated successfully!");
+        toast.success("Audio generated successfully!");
       } else if (response.status === 403) {
-        alert("Free trial expired. Please upgrade to Pro!");
+        toast.error("Free trial expired. Please upgrade to Pro!");
       } else if (response.status === 400) {
-        alert("Invalid text input. Please try again.");
+        toast.error("Invalid text input. Please try again.");
       } else {
-        throw new Error('Failed to generate audio');
+        throw new Error("Failed to generate audio");
       }
     } catch (error) {
-      console.error('Text to audio error:', error);
-      alert('Could not generate audio. Please try again.');
+      console.error("Text to audio error:", error);
+      toast.error("Could not generate audio. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -117,7 +121,7 @@ export default function TextToAudioPage() {
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
   const handleDownloadAudio = () => {
@@ -128,14 +132,14 @@ export default function TextToAudioPage() {
       document.body.appendChild(element);
       element.click();
       document.body.removeChild(element);
-      alert("Audio file downloaded!");
+      toast.success("Audio file downloaded!");
     }
   };
 
   const handleCopyText = async () => {
     if (text) {
       await navigator.clipboard.writeText(text);
-      alert("Text copied to clipboard!");
+      toast.success("Text copied to clipboard!");
     }
   };
 
@@ -149,7 +153,7 @@ export default function TextToAudioPage() {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
-    alert("Cleared successfully!");
+    toast.success("Cleared successfully!");
   };
 
   const handleReset = () => {
@@ -170,7 +174,9 @@ export default function TextToAudioPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4 shadow-lg">
             <Volume2 className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Text to Audio</h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+            Text to Audio
+          </h1>
           <p className="text-gray-600 text-lg">
             Convert your text into natural-sounding speech with AI
           </p>
@@ -185,9 +191,11 @@ export default function TextToAudioPage() {
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
                   <FileText className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800">Enter Your Text</h3>
+                <h3 className="text-xl font-semibold text-gray-800">
+                  Enter Your Text
+                </h3>
               </div>
-              
+
               <div className="relative">
                 <textarea
                   value={text}
@@ -203,25 +211,27 @@ export default function TextToAudioPage() {
             </div>
 
             {/* Voice and Speed Settings */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               {/* Voice Selection */}
-              <div>
+              <div className="col-span-1 md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                   Choose Voice
                 </label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {voices.map((v) => (
                     <button
                       key={v.id}
                       onClick={() => setVoice(v.id)}
                       className={`p-3 rounded-lg border transition-all duration-200 text-left ${
                         voice === v.id
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                          ? "border-blue-500 bg-blue-50 text-blue-700"
+                          : "border-gray-200 hover:border-gray-300 text-gray-700"
                       }`}
                     >
                       <div className="font-medium text-sm">{v.name}</div>
-                      <div className="text-xs text-gray-500">{v.description}</div>
+                      <div className="text-xs text-gray-500">
+                        {v.description}
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -239,8 +249,8 @@ export default function TextToAudioPage() {
                       onClick={() => setSpeed(s.value)}
                       className={`p-3 rounded-lg border transition-all duration-200 text-center ${
                         speed === s.value
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                          ? "border-blue-500 bg-blue-50 text-blue-700"
+                          : "border-gray-200 hover:border-gray-300 text-gray-700"
                       }`}
                     >
                       <div className="font-medium text-sm">{s.label}</div>
@@ -278,10 +288,17 @@ export default function TextToAudioPage() {
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl mb-4">
                 <Sparkles className="w-8 h-8 text-white animate-pulse" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">AI Processing Your Text</h3>
-              <p className="text-gray-600 mb-4">Our advanced AI is converting your text to speech...</p>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                AI Processing Your Text
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Our advanced AI is converting your text to speech...
+              </p>
               <div className="w-full bg-gray-200 rounded-full h-3">
-                <div className="bg-gradient-to-r from-purple-500 to-blue-500 h-3 rounded-full animate-pulse" style={{width: '75%'}}></div>
+                <div
+                  className="bg-gradient-to-r from-purple-500 to-blue-500 h-3 rounded-full animate-pulse"
+                  style={{ width: "75%" }}
+                ></div>
               </div>
             </div>
           </div>
@@ -295,8 +312,13 @@ export default function TextToAudioPage() {
                 <Volume2 className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800 text-lg">Generated Audio</h3>
-                <p className="text-gray-500">Voice: {voices.find(v => v.id === voice)?.name} • Speed: {speed}x</p>
+                <h3 className="font-semibold text-gray-800 text-lg">
+                  Generated Audio
+                </h3>
+                <p className="text-gray-500">
+                  Voice: {voices.find((v) => v.id === voice)?.name} • Speed:{" "}
+                  {speed}x
+                </p>
               </div>
             </div>
 
@@ -321,12 +343,16 @@ export default function TextToAudioPage() {
                 >
                   <RotateCcw className="w-4 h-4" />
                 </button>
-                
+
                 <button
                   onClick={handlePlayPause}
                   className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-105"
                 >
-                  {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
+                  {isPlaying ? (
+                    <Pause className="w-5 h-5" />
+                  ) : (
+                    <Play className="w-5 h-5 ml-0.5" />
+                  )}
                 </button>
 
                 <div className="flex-1">
@@ -375,7 +401,9 @@ export default function TextToAudioPage() {
 
         {/* Tips Section */}
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 border border-blue-100">
-          <h4 className="font-semibold text-gray-800 mb-3 text-lg">💡 Tips for Better Audio Generation</h4>
+          <h4 className="font-semibold text-gray-800 mb-3 text-lg">
+            💡 Tips for Better Audio Generation
+          </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
             <ul className="space-y-2">
               <li>• Use proper punctuation for natural pauses</li>
@@ -400,9 +428,9 @@ export default function TextToAudioPage() {
           background: linear-gradient(45deg, #3b82f6, #8b5cf6);
           cursor: pointer;
           border: 2px solid white;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
+
         .slider::-moz-range-thumb {
           width: 16px;
           height: 16px;
@@ -410,7 +438,7 @@ export default function TextToAudioPage() {
           background: linear-gradient(45deg, #3b82f6, #8b5cf6);
           cursor: pointer;
           border: 2px solid white;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
       `}</style>
     </div>

@@ -1,5 +1,7 @@
 // app/api/text-to-audio/route.ts
 
+// Groq for Text to Audio Conversion
+import { voices } from "@/const";
 import { checkSubscription } from "@/lib/subscription";
 import { checkApiLimit, increaseApiLimit } from "@/lib/userApiLimit";
 import { client } from "@/lib/utils"; // Using your existing Groq client
@@ -15,7 +17,8 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { text, voice = "alloy", speed = 1.0 } = body;
+    const { text, voice = "Fritz-PlayAI", speed = 1.0 } = body;
+    console.log("body: ", body);
 
     if (!text || !text.trim()) {
       return new NextResponse("Text is required", { status: 400 });
@@ -26,8 +29,8 @@ export async function POST(req: Request) {
     }
 
     // Validate voice parameter
-    const validVoices = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
-    if (!validVoices.includes(voice)) {
+    const isValidVoice = voices.map(v => v.id === voice);
+    if (!isValidVoice.includes(true)) {
       return new NextResponse("Invalid voice selection", { status: 400 });
     }
 
@@ -47,16 +50,12 @@ export async function POST(req: Request) {
     // Note: Groq doesn't have text-to-speech capabilities yet
     // So we'll use OpenAI for this functionality
     // You'll need to install openai: npm install openai
-    
-    const OpenAI = require('openai');
-    const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
 
     // Generate speech using OpenAI's text-to-speech
-    const mp3 = await openai.audio.speech.create({
-      model: "tts-1", // Use tts-1-hd for higher quality but slower generation
-      voice: voice,
+    const mp3 = await client.audio.speech.create({
+      // model: "tts-1", // Use tts-1-hd for higher quality but slower generation
+      model:"playai-tts",
+      voice, // Use Fritz voice for Groq
       input: text,
       speed: speed,
       response_format: "mp3"

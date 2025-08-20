@@ -88,15 +88,15 @@ const routes = [
     hoverColor: "hover:bg-blue-500/20",
     category: "ai"
   },
-  {
-    label: "Speech to Text Translation",
-    href: "/audio-translation",
-    icon: Languages,
-    color: "text-pink-400",
-    bgColor: "bg-pink-500/10",
-    hoverColor: "hover:bg-pink-500/20",
-    category: "tools"
-  },
+  // {
+  //   label: "Speech to Text Translation",
+  //   href: "/audio-translation",
+  //   icon: Languages,
+  //   color: "text-pink-400",
+  //   bgColor: "bg-pink-500/10",
+  //   hoverColor: "hover:bg-pink-500/20",
+  //   category: "tools"
+  // },
   {
     label: "Text Translation",
     href: "/translation",
