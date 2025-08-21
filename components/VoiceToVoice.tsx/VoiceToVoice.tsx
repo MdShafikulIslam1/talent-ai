@@ -549,6 +549,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Mic, Square, Volume2, Play, Pause, Download, Copy, Trash2, RotateCcw, Sparkles, Loader2, MessageCircle, Bot, User, Brain, History } from "lucide-react";
+import { toast } from "sonner";
 // Your actual voices configuration
 const voices = [
   { id: "Fritz-PlayAI", name: "Fritz", description: "Clear and precise" },
@@ -779,14 +780,14 @@ export default function VoiceToVoicePage() {
   const handleCopyTranscript = async () => {
     if (transcript) {
       await navigator.clipboard.writeText(transcript);
-      alert("Transcript copied to clipboard!");
+      toast.success("Transcript copied to clipboard!");
     }
   };
 
   const handleCopyResponse = async () => {
     if (response) {
       await navigator.clipboard.writeText(response);
-      alert("Response copied to clipboard!");
+      toast.success("Response copied to clipboard!");
     }
   };
 
@@ -798,7 +799,7 @@ export default function VoiceToVoicePage() {
       document.body.appendChild(element);
       element.click();
       document.body.removeChild(element);
-      alert("AI response audio downloaded!");
+      toast.success("AI response audio downloaded!");
     }
   };
 

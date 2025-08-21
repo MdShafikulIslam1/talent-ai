@@ -15,7 +15,8 @@ import {
   Zap,
   Mic,
   Volume2,
-  AudioLines
+  AudioLines,
+  Image as ImageIcon,
 } from "lucide-react";
 import { Montserrat } from "next/font/google";
 import Link from "next/link";
@@ -43,6 +44,15 @@ const routes = [
     hoverColor: "hover:bg-violet-500/20",
     category: "ai"
   },
+  // {
+  //   label: "Image Creator",
+  //   href: "/image-creator",
+  //   icon: ImageIcon,
+  //   color: "text-fuchsia-400",
+  //   bgColor: "bg-fuchsia-500/10",
+  //   hoverColor: "hover:bg-fuchsia-500/20",
+  //   category: "ai"
+  // },
   {
     label: "Code Generation",
     href: "/code",
@@ -83,9 +93,9 @@ const routes = [
     label: "Voice to Voice",
     href: "/voice-to-voice",
     icon: AudioLines,
-    color: "text-blue-400",
-    bgColor: "bg-blue-500/10",
-    hoverColor: "hover:bg-blue-500/20",
+    color: "text-teal-400",
+    bgColor: "bg-teal-500/10",
+    hoverColor: "hover:bg-teal-500/20",
     category: "ai"
   },
   // {
@@ -193,7 +203,7 @@ const Sidebar = ({ apiLimitCount = 0, isPro }: SidebarProps) => {
 
       {/* Scrollable Navigation Routes */}
       <div className="flex-1 overflow-hidden">
-        <div className="h-full overflow-y-auto px-4 pb-4 scrollbar-thin scrollbar-track-slate-800 scrollbar-thumb-slate-600 hover:scrollbar-thumb-slate-500 scrollbar-thumb-rounded-full">
+        <div className="h-full overflow-y-auto px-4 pb-4 custom-scrollbar">
           <div className="space-y-6 pr-2">
           {Object.entries(groupedRoutes).map(([categoryKey, categoryRoutes]) => (
             <div key={categoryKey} className="space-y-2">
@@ -266,6 +276,46 @@ const Sidebar = ({ apiLimitCount = 0, isPro }: SidebarProps) => {
 
       {/* Bottom gradient overlay */}
       <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-slate-900 to-transparent pointer-events-none"></div>
+
+      {/* Custom Scrollbar Styles */}
+      <style jsx>{`
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(100, 116, 139, 0.4) rgba(51, 65, 85, 0.1);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(51, 65, 85, 0.1);
+          border-radius: 10px;
+          margin: 4px 0;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: linear-gradient(
+            to bottom,
+            rgba(59, 130, 246, 0.4),
+            rgba(139, 92, 246, 0.4)
+          );
+          border-radius: 10px;
+          border: 2px solid rgba(51, 65, 85, 0.1);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(
+            to bottom,
+            rgba(59, 130, 246, 0.6),
+            rgba(139, 92, 246, 0.6)
+          );
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-corner {
+          background: transparent;
+        }
+      `}</style>
     </div>
   );
 };
