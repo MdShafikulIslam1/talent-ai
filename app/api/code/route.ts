@@ -39,7 +39,7 @@
 //     const completion = await groq.chat.completions.create({
 //       messages: [instructionMessage, ...messages],
 //       // model: "gpt-3.5-turbo",
-//       model:"llama3-8b-8192"
+//       model:"llama-3.1-8b-instant"
       
 //     });
 
@@ -170,7 +170,7 @@ function getOptimalSettings(messages: any[]) {
 
   // Use faster model for simple requests
   return {
-    model: "llama3-8b-8192",
+    model: "llama-3.1-8b-instant",
     temperature: 0.2,
     max_tokens: 1500,
   };

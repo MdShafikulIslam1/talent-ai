@@ -60,7 +60,7 @@
 //     // Step 2: AI Response (Groq Chat)
 //     console.log("Step 2: Generating AI response...");
 //     const chatCompletion = await client.chat.completions.create({
-//       model: "llama3-8b-8192", // or mixtral-8x7b-32768
+//       model: "llama-3.1-8b-instant", // or mixtral-8x7b-32768
 //       messages: [
 //         {
 //           role: "system",
@@ -240,7 +240,7 @@ export async function POST(req: Request) {
     // Step 2: AI Response (Groq Chat) with conversation context
     console.log("Step 2: Generating AI response with context...");
     const chatCompletion = await client.chat.completions.create({
-      model: "llama3-8b-8192",
+      model: "llama-3.1-8b-instant",
       messages: messages,
       temperature: 0.7,
       max_tokens: 200, // Increased slightly for more context-aware responses
@@ -259,7 +259,6 @@ export async function POST(req: Request) {
     addToConversationHistory(userId, 'assistant', aiResponse);
 
     // Step 3: Text -> Speech (TTS)
-    console.log("Step 3: Converting response to speech...");
 
     const mp3 = await client.audio.speech.create({
       model: "playai-tts",

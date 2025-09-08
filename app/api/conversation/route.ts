@@ -5,9 +5,9 @@ import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY,
+// });
 
 
 const groq = client;
@@ -35,7 +35,7 @@ export async function POST(req: Request) {
 
     const completion = await groq.chat.completions.create({
       messages,
-      model: "llama3-8b-8192",
+      model: "llama-3.1-8b-instant",
     });
 
     await increaseApiLimit();

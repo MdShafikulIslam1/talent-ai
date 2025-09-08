@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     }
     const prompt = `Summarize the following content in 3-4 lines:\n\n${text}`;
     const completion = await client.chat.completions.create({
-      model: "llama3-8b-8192",
+      model: "llama-3.1-8b-instant",
       messages: [{ role: "user", content: prompt }],
     });
     await increaseApiLimit();
