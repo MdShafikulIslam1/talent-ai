@@ -1,24 +1,22 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
 import {
-  Mic,
-  Square,
-  Volume2,
-  Play,
-  Pause,
-  Download,
+  Bot,
+  Brain,
   Copy,
-  Trash2,
-  RotateCcw,
-  Sparkles,
+  Download,
+  History,
   Loader2,
   MessageCircle,
-  Bot,
-  User,
-  Brain,
-  History,
+  Mic,
+  Pause,
+  Play,
+  Sparkles,
+  Square,
+  Trash2,
+  User
 } from "lucide-react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 // Your actual voices configuration
 const voices = [
@@ -144,7 +142,7 @@ export default function VoiceToVoicePage() {
 
     const blob = new Blob(audioChunksRef.current, { type: "audio/webm" });
     const formData = new FormData();
-    formData.append("audio", blob, "voice.webm");
+    formData.append("data", blob, "voice.webm");
     formData.append("voice", voice);
 
     setLoading(true);
@@ -153,10 +151,14 @@ export default function VoiceToVoicePage() {
     setOutputAudioURL(null);
 
     try {
-      const response = await fetch("/api/voice-to-voice", {
+      const response = await fetch("https://shofik.app.n8n.cloud/webhook-test/4279a1e7-67cc-4115-8d8b-a663caee46eb", {
         method: "POST",
         body: formData,
       });
+      // const response = await fetch("/api/voice-to-voice", {
+      //   method: "POST",
+      //   body: formData,
+      // });
 
       if (response.ok) {
         const data = await response.json();
