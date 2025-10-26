@@ -1,74 +1,23 @@
 "use client";
 
-import {
-  Bot,
-  Brain,
-  Copy,
-  Download,
-  History,
-  Loader2,
-  MessageCircle,
-  Mic,
-  Pause,
-  Play,
-  Sparkles,
-  Square,
-  Trash2,
-  User
-} from "lucide-react";
-import { useRef, useState } from "react";
+import { History, MessageCircle, Mic, Square, Trash2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-// Your actual voices configuration
-const voices = [
-  { id: "Fritz-PlayAI", name: "Fritz", description: "Clear and precise" },
-  { id: "Arista-PlayAI", name: "Arista", description: "Clear and articulate" },
-  { id: "Atlas-PlayAI", name: "Atlas", description: "Strong and confident" },
-  { id: "Basil-PlayAI", name: "Basil", description: "Warm and friendly" },
-  {
-    id: "Briggs-PlayAI",
-    name: "Briggs",
-    description: "Deep and authoritative",
-  },
-  {
-    id: "Calum-PlayAI",
-    name: "Calum",
-    description: "Casual and conversational",
-  },
-  {
-    id: "Celeste-PlayAI",
-    name: "Celeste",
-    description: "Smooth and professional",
-  },
-  {
-    id: "Cheyenne-PlayAI",
-    name: "Cheyenne",
-    description: "Expressive and dynamic",
-  },
-  { id: "Chip-PlayAI", name: "Chip", description: "Energetic and upbeat" },
-  { id: "Cillian-PlayAI", name: "Cillian", description: "Calm and soothing" },
-  {
-    id: "Deedee-PlayAI",
-    name: "Deedee",
-    description: "Friendly and approachable",
-  },
-  { id: "Gail-PlayAI", name: "Gail", description: "Warm and empathetic" },
-];
+// --- CONFIG: adjust these to tune sensitivity / timings ---
+const API_ENDPOINT = "https://shofik.app.n8n.cloud/webhook/voice-to-voice"; // বা আপনার webhook URL (উদাহরণ: "https://shofik.app.n8n.cloud/...")
+const SILENCE_THRESHOLD = 0.01; // RMS threshold (lower = more sensitive). Tune as needed.
+const SILENCE_DURATION = 1500; // milliseconds of continuous "silence" to trigger stop
+const AUTO_RESTART_DELAY = 500; // ms delay after AI finished speaking before restarting listening
 
 export default function VoiceToVoicePage() {
-  const [recording, setRecording] = useState(false);
+  const [modeActive, setModeActive] = useState(false); // overall continuous conversation mode on/off
+  const [listening, setListening] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
   const [inputAudioURL, setInputAudioURL] = useState<string | null>(null);
   const [outputAudioURL, setOutputAudioURL] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string | null>(null);
-  const [response, setResponse] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [recordingDuration, setRecordingDuration] = useState(0);
-  const [isPlayingInput, setIsPlayingInput] = useState(false);
-  const [isPlayingOutput, setIsPlayingOutput] = useState(false);
-  const [currentInputTime, setCurrentInputTime] = useState(0);
-  const [currentOutputTime, setCurrentOutputTime] = useState(0);
-  const [inputDuration, setInputDuration] = useState(0);
-  const [outputDuration, setOutputDuration] = useState(0);
-  const [voice, setVoice] = useState("Fritz-PlayAI");
+  const [responseText, setResponseText] = useState<string | null>(null);
   const [conversationHistory, setConversationHistory] = useState<
     Array<{
       type: "user" | "assistant";
@@ -79,678 +28,686 @@ export default function VoiceToVoicePage() {
   >([]);
   const [conversationCount, setConversationCount] = useState(0);
   const [hasContext, setHasContext] = useState(false);
-  const [memoryStatus, setMemoryStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
 
+  // refs for audio processing
+  const mediaStreamRef = useRef<MediaStream | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const inputAudioRef = useRef<HTMLAudioElement | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const sourceNodeRef = useRef<MediaStreamAudioSourceNode | null>(null);
+  const rmsIntervalRef = useRef<number | null>(null);
+  const silenceTimerRef = useRef<number | null>(null);
   const outputAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  const handleStartRecording = async () => {
-    setTranscript(null);
-    setResponse(null);
-    setOutputAudioURL(null);
-    setRecordingDuration(0);
+  // durations and play state for UI
+  const [recordingDuration, setRecordingDuration] = useState(0);
+  const recordingTimerRef = useRef<number | null>(null);
 
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-      audioChunksRef.current = [];
-
-      mediaRecorder.ondataavailable = (e) => {
-        audioChunksRef.current.push(e.data);
-      };
-
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, {
-          type: "audio/webm",
-        });
-        const url = URL.createObjectURL(audioBlob);
-        setInputAudioURL(url);
-        stream.getTracks().forEach((track) => track.stop());
-      };
-
-      mediaRecorder.start();
-      setRecording(true);
-
-      intervalRef.current = setInterval(() => {
-        setRecordingDuration((prev) => prev + 1);
-      }, 1000);
-
-      toast.success("Recording started!");
-    } catch (error) {
-      console.error("Error accessing microphone:", error);
-      toast.error("Could not access microphone. Please check permissions.");
-    }
-  };
-
-  const handleStopRecording = () => {
-    mediaRecorderRef.current?.stop();
-    setRecording(false);
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-    toast.success("Recording stopped!");
-  };
-
-  const handleVoiceToVoice = async () => {
-    if (!inputAudioURL) return;
-
-    const blob = new Blob(audioChunksRef.current, { type: "audio/webm" });
-    const formData = new FormData();
-    formData.append("data", blob, "voice.webm");
-    formData.append("voice", voice);
-
-    setLoading(true);
-    setTranscript(null);
-    setResponse(null);
-    setOutputAudioURL(null);
-
-    try {
-      const response = await fetch("https://shofik.app.n8n.cloud/webhook-test/4279a1e7-67cc-4115-8d8b-a663caee46eb", {
-        method: "POST",
-        body: formData,
-      });
-      // const response = await fetch("/api/voice-to-voice", {
-      //   method: "POST",
-      //   body: formData,
-      // });
-
-      if (response.ok) {
-        const data = await response.json();
-
-        if (data.success) {
-          setTranscript(data.transcription);
-          setResponse(data.aiResponse);
-          setConversationCount(data.conversationCount || 0);
-          setHasContext(data.hasContext || false);
-
-          // Convert the base64 audio to blob and create URL
-          const audioBlob = new Blob(
-            [
-              new Uint8Array(
-                atob(data.audio)
-                  .split("")
-                  .map((c) => c.charCodeAt(0))
-              ),
-            ],
-            { type: "audio/mpeg" }
-          );
-          const audioUrl = URL.createObjectURL(audioBlob);
-          setOutputAudioURL(audioUrl);
-
-          // Add to conversation history
-          const newHistory = [
-            ...conversationHistory,
-            {
-              type: "user" as const,
-              text: data.transcription,
-              audioURL: inputAudioURL,
-              timestamp: new Date(),
-            },
-            {
-              type: "assistant" as const,
-              text: data.aiResponse,
-              audioURL: audioUrl,
-              timestamp: new Date(),
-            },
-          ];
-          setConversationHistory(newHistory);
-
-          toast.success("Voice conversation completed!");
-        } else {
-          throw new Error("Voice to voice conversion failed");
-        }
-      } else if (response.status === 403) {
-        toast.error("Free trial expired. Please upgrade to Pro!");
-      } else {
-        throw new Error("Failed to process voice");
-      }
-    } catch (error) {
-      console.error("Voice to voice error:", error);
-      toast.error("Could not process voice conversation. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleClearMemory = async () => {
-    setMemoryStatus("loading");
-
-    try {
-      const formData = new FormData();
-      formData.append("clearHistory", "true");
-
-      const response = await fetch("/api/voice-to-voice", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          setConversationHistory([]);
-          setConversationCount(0);
-          setHasContext(false);
-          setMemoryStatus("success");
-          toast.success("AI memory cleared successfully!");
-
-          setTimeout(() => setMemoryStatus("idle"), 2000);
-        }
-      }
-    } catch (error) {
-      console.error("Error clearing memory:", error);
-      setMemoryStatus("error");
-      toast.error("Failed to clear AI memory");
-      setTimeout(() => setMemoryStatus("idle"), 2000);
-    }
-  };
-
+  // ---------- Helpers ----------
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  const startRecordingTimer = () => {
+    if (recordingTimerRef.current)
+      window.clearInterval(recordingTimerRef.current);
+    setRecordingDuration(0);
+    recordingTimerRef.current = window.setInterval(() => {
+      setRecordingDuration((s) => s + 1);
+    }, 1000);
   };
 
-  const handleInputPlayPause = () => {
-    if (!inputAudioRef.current) return;
-    if (isPlayingInput) {
-      inputAudioRef.current.pause();
+  const stopRecordingTimer = () => {
+    if (recordingTimerRef.current) {
+      window.clearInterval(recordingTimerRef.current);
+      recordingTimerRef.current = null;
+    }
+  };
+
+  // compute RMS from analyser float time domain data
+  const computeRMS = (buffer: Float32Array) => {
+    let sum = 0;
+    for (let i = 0; i < buffer.length; i++) {
+      const v = buffer[i];
+      sum += v * v;
+    }
+    return Math.sqrt(sum / buffer.length);
+  };
+
+  // ---------- Core: start listening ----------
+  const startListening = async () => {
+    if (listening || processing || speaking) return;
+    try {
+      // request mic
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaStreamRef.current = stream;
+
+      // prepare MediaRecorder
+      audioChunksRef.current = [];
+      const recorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+      mediaRecorderRef.current = recorder;
+
+      recorder.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) {
+          audioChunksRef.current.push(e.data);
+        }
+      };
+
+      recorder.onstop = () => {
+        // form the final blob and set input URL (for UI and history)
+        const blob = new Blob(audioChunksRef.current, { type: "audio/webm" });
+        const url = URL.createObjectURL(blob);
+        setInputAudioURL(url);
+      };
+
+      recorder.start();
+      setListening(true);
+      startRecordingTimer();
+
+      // prepare analyser + audioContext for silence detection
+      const audioCtx = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
+      audioContextRef.current = audioCtx;
+      const source = audioCtx.createMediaStreamSource(stream);
+      sourceNodeRef.current = source;
+      const analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 2048;
+      source.connect(analyser);
+      analyserRef.current = analyser;
+
+      // realtime check interval: sample every 100ms
+      if (rmsIntervalRef.current) window.clearInterval(rmsIntervalRef.current);
+      rmsIntervalRef.current = window.setInterval(() => {
+        if (!analyserRef.current) return;
+        const buffer = new Float32Array(analyserRef.current.fftSize);
+        analyserRef.current.getFloatTimeDomainData(buffer);
+        const rms = computeRMS(buffer);
+
+        // if rms is below threshold, start/continue silence timer
+        if (rms <= SILENCE_THRESHOLD) {
+          if (!silenceTimerRef.current) {
+            silenceTimerRef.current = window.setTimeout(() => {
+              // silence duration reached -> stop recording and send
+              handleSilenceDetected();
+            }, SILENCE_DURATION);
+          }
+        } else {
+          // sound detected -> clear timer
+          if (silenceTimerRef.current) {
+            window.clearTimeout(silenceTimerRef.current);
+            silenceTimerRef.current = null;
+          }
+        }
+      }, 100);
+      toast.success("Listening...");
+    } catch (err) {
+      console.error("startListening error:", err);
+      toast.error(
+        "Could not access microphone. অনুগ্রহ করে পারমিশন নিশ্চিত করুন।"
+      );
+      cleanupAll();
+    }
+  };
+
+  const stopListening = () => {
+    try {
+      if (
+        mediaRecorderRef.current &&
+        mediaRecorderRef.current.state !== "inactive"
+      ) {
+        mediaRecorderRef.current.stop();
+      }
+
+      if (mediaStreamRef.current) {
+        mediaStreamRef.current.getTracks().forEach((t) => t.stop());
+        mediaStreamRef.current = null;
+      }
+
+      if (audioContextRef.current) {
+        try {
+          audioContextRef.current.close();
+        } catch (e) {
+          // ignore
+        }
+        audioContextRef.current = null;
+      }
+      if (rmsIntervalRef.current) {
+        window.clearInterval(rmsIntervalRef.current);
+        rmsIntervalRef.current = null;
+      }
+      if (silenceTimerRef.current) {
+        window.clearTimeout(silenceTimerRef.current);
+        silenceTimerRef.current = null;
+      }
+      setListening(false);
+      stopRecordingTimer();
+    } catch (err) {
+      console.error("stopListening error:", err);
+    }
+  };
+
+  const handleSilenceDetected = () => {
+    // user paused -> stop recorder and send blob
+    stopListening();
+    // small delay to let recorder finalize
+    setTimeout(() => {
+      sendRecordedAudio();
+    }, 150);
+  };
+
+  // ---------- send recorded audio to API and handle response ----------
+  const sendRecordedAudio = async () => {
+    if (processing) return;
+    const chunks = audioChunksRef.current;
+    if (!chunks || chunks.length === 0) {
+      // nothing recorded
+      if (modeActive) {
+        // restart listening
+        setTimeout(() => startListening(), 200);
+      }
+      return;
+    }
+
+    setProcessing(true);
+    setResponseText(null);
+    setOutputAudioURL(null);
+
+    try {
+      const blob = new Blob(chunks, { type: "audio/webm" });
+      // append to form data
+      const formData = new FormData();
+      formData.append("data", blob, "voice.webm");
+      //   formData.append("context", hasContext ? "true" : "false");
+
+      // POST to API (update API_ENDPOINT as needed)
+      const res = await fetch(API_ENDPOINT, {
+        method: "POST",
+        body: formData,
+      });
+
+      // handle different response types:
+      // - if server returns audio blob: we will create objectURL and play
+      // - if server returns JSON with base64 audio + transcription + aiResponse: handle accordingly
+      if (!res.ok) {
+        if (res.status === 403) {
+          toast.error(
+            "Free trial expired or access denied. Upgrade/Check credential."
+          );
+        } else {
+          toast.error("Server error while processing audio.");
+        }
+        throw new Error("API error");
+      }
+
+      const contentType = res.headers.get("content-type") || "";
+      if (contentType.includes("application/json")) {
+        const data = await res.json();
+        // expected fields: success, transcription, aiResponse, audio (base64), conversationCount, hasContext
+        if (data.success) {
+          if (data.transcription) setTranscript(data.transcription);
+          if (data.aiResponse) setResponseText(data.aiResponse);
+          if (data.conversationCount)
+            setConversationCount(data.conversationCount);
+          if (typeof data.hasContext === "boolean")
+            setHasContext(data.hasContext);
+
+          // handle base64 audio
+          if (data.audio) {
+            const bytes = Uint8Array.from(atob(data.audio), (c) =>
+              c.charCodeAt(0)
+            );
+            const audioBlob = new Blob([bytes], { type: "audio/mpeg" });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            setOutputAudioURL(audioUrl);
+            playOutputAudioAndContinue(
+              audioUrl,
+              data.transcription,
+              data.aiResponse
+            );
+            toast.success("AI responded.");
+          } else {
+            // no audio - maybe text only. Add to history and restart listening
+            addToHistoryAndMaybeRestart(data.transcription, data.aiResponse);
+          }
+        } else {
+          throw new Error("API returned success:false");
+        }
+      } else if (
+        contentType.startsWith("audio/") ||
+        contentType.includes("octet-stream")
+      ) {
+        // server returned raw audio blob
+        const audioBlob = await res.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        setOutputAudioURL(audioUrl);
+        playOutputAudioAndContinue(audioUrl);
+        toast.success("AI audio received.");
+      } else {
+        // fallback: try blob
+        const blob = await res.blob();
+        const audioUrl = URL.createObjectURL(blob);
+        setOutputAudioURL(audioUrl);
+        playOutputAudioAndContinue(audioUrl);
+      }
+    } catch (err) {
+      console.error("sendRecordedAudio error:", err);
+      toast.error("Failed to process voice. আবার চেষ্টা করুন।");
+      // ensure we restart listening in continuous mode
+      if (modeActive) {
+        setTimeout(() => startListening(), 700);
+      }
+    } finally {
+      setProcessing(false);
+      // reset recorded chunks for next turn
+      audioChunksRef.current = [];
+      setRecordingDuration(0);
+      stopRecordingTimer();
+    }
+  };
+
+  // add conversation items and optionally restart listening
+  const addToHistoryAndMaybeRestart = (
+    userText?: string | null,
+    aiText?: string | null
+  ) => {
+    const now = new Date();
+    const newHistory = [...conversationHistory];
+    if (userText) {
+      newHistory.push({
+        type: "user",
+        text: userText,
+        audioURL: inputAudioURL || undefined,
+        timestamp: now,
+      });
+    }
+    if (aiText) {
+      newHistory.push({ type: "assistant", text: aiText, timestamp: now });
+    }
+    setConversationHistory(newHistory);
+    // restart listening if modeActive
+    if (modeActive) {
+      setTimeout(() => startListening(), 500);
+    }
+  };
+
+  // ---------- play the AI audio, and when finished, restart listening (if modeActive) ----------
+  const playOutputAudioAndContinue = (
+    audioUrl: string,
+    transcription?: string,
+    aiText?: string
+  ) => {
+    // ensure any existing audio is stopped
+    if (outputAudioRef.current) {
+      try {
+        outputAudioRef.current.pause();
+      } catch (e) {}
+    }
+    const audio = new Audio(audioUrl);
+    outputAudioRef.current = audio;
+    setSpeaking(true);
+    // push to history immediately (will show while playing)
+    const now = new Date();
+    const newHistory = [...conversationHistory];
+    if (transcription)
+      newHistory.push({
+        type: "user",
+        text: transcription,
+        audioURL: inputAudioURL || undefined,
+        timestamp: now,
+      });
+    if (aiText)
+      newHistory.push({
+        type: "assistant",
+        text: aiText,
+        audioURL: audioUrl,
+        timestamp: now,
+      });
+    setConversationHistory(newHistory);
+
+    audio.onended = () => {
+      setSpeaking(false);
+      // free objectURL? we might keep for download UI; leave it for now
+      if (modeActive) {
+        setTimeout(() => {
+          startListening();
+        }, AUTO_RESTART_DELAY);
+      }
+    };
+
+    audio.onerror = (e) => {
+      console.error("Audio play error", e);
+      setSpeaking(false);
+      if (modeActive) {
+        setTimeout(() => startListening(), AUTO_RESTART_DELAY);
+      }
+    };
+
+    // start playing
+    audio.play().catch((err) => {
+      console.error("Play failed", err);
+      setSpeaking(false);
+      if (modeActive) {
+        setTimeout(() => startListening(), AUTO_RESTART_DELAY);
+      }
+    });
+  };
+
+  // ---------- Cleanup everything ----------
+  const cleanupAll = () => {
+    stopListening();
+    setModeActive(false);
+    setListening(false);
+    setProcessing(false);
+    setSpeaking(false);
+
+    if (outputAudioRef.current) {
+      try {
+        outputAudioRef.current.pause();
+      } catch (e) {}
+      outputAudioRef.current = null;
+    }
+    if (audioChunksRef.current) audioChunksRef.current = [];
+    setInputAudioURL(null);
+    setOutputAudioURL(null);
+    stopRecordingTimer();
+    if (rmsIntervalRef.current) {
+      window.clearInterval(rmsIntervalRef.current);
+      rmsIntervalRef.current = null;
+    }
+    if (silenceTimerRef.current) {
+      window.clearTimeout(silenceTimerRef.current);
+      silenceTimerRef.current = null;
+    }
+    if (audioContextRef.current) {
+      try {
+        audioContextRef.current.close();
+      } catch (e) {}
+      audioContextRef.current = null;
+    }
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach((t) => t.stop());
+      mediaStreamRef.current = null;
+    }
+  };
+
+  // ---------- UI Controls ----------
+  const handleToggleMode = async () => {
+    if (!modeActive) {
+      // start continuous mode
+      setModeActive(true);
+      await startListening();
     } else {
-      inputAudioRef.current.play();
-    }
-    setIsPlayingInput(!isPlayingInput);
-  };
-
-  const handleOutputPlayPause = () => {
-    if (!outputAudioRef.current) return;
-    if (isPlayingOutput) {
-      outputAudioRef.current.pause();
-    } else {
-      outputAudioRef.current.play();
-    }
-    setIsPlayingOutput(!isPlayingOutput);
-  };
-
-  const handleCopyTranscript = async () => {
-    if (transcript) {
-      await navigator.clipboard.writeText(transcript);
-      toast.success("Transcript copied to clipboard!");
+      // stop everything
+      cleanupAll();
+      toast.success("Conversation stopped.");
     }
   };
 
-  const handleCopyResponse = async () => {
-    if (response) {
-      await navigator.clipboard.writeText(response);
-      toast.success("Response copied to clipboard!");
-    }
+  const handleManualStop = () => {
+    cleanupAll();
+    toast.success("Stopped.");
+  };
+
+  const handleClearHistory = () => {
+    setConversationHistory([]);
+    setConversationCount(0);
+    setHasContext(false);
+    toast.success("Conversation history cleared.");
   };
 
   const handleDownloadOutput = () => {
     if (outputAudioURL) {
-      const element = document.createElement("a");
-      element.href = outputAudioURL;
-      element.download = "ai-response.mp3";
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
-      toast.success("AI response audio downloaded!");
+      const a = document.createElement("a");
+      a.href = outputAudioURL;
+      a.download = "ai-response.mp3";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      toast.success("Downloaded audio");
     }
   };
 
-  const handleClear = async () => {
-    // Clear frontend state
-    setTranscript(null);
-    setResponse(null);
-    setInputAudioURL(null);
-    setOutputAudioURL(null);
-    setRecordingDuration(0);
-    setCurrentInputTime(0);
-    setCurrentOutputTime(0);
-    setInputDuration(0);
-    setOutputDuration(0);
-    setIsPlayingInput(false);
-    setIsPlayingOutput(false);
-    audioChunksRef.current = [];
+  // cleanup on unmount
+  useEffect(() => {
+    return () => {
+      cleanupAll();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    // Clear conversation history and backend memory
-    await handleClearMemory();
-  };
-
+  // ---------- Render UI ----------
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-600 rounded-2xl mb-4 shadow-lg">
-            <MessageCircle className="w-8 h-8 text-white" />
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-purple-500 to-blue-600 rounded-2xl mb-3 shadow-lg">
+            <MessageCircle className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
-            Voice to Voice AI
+          <h1 className="text-3xl font-bold text-gray-800 mb-1">
+            Voice to Voice — Continuous Mode
           </h1>
-          <p className="text-gray-600 text-lg">
-            Have a natural conversation with AI - now with memory of your chat
-            history
+          <p className="text-gray-600 text-sm">
+            একটি বোতামে শুরু করুন — কথা বলুন, থামুন — AI উত্তর শুনুন — আবার
+            বলুন। (Auto silence detection)
           </p>
 
-          {/* Memory Status Indicator */}
-          <div className="flex items-center justify-center space-x-4 mt-4">
+          {/* Status indicators */}
+          <div className="flex items-center justify-center space-x-3 mt-4">
             <div
-              className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm ${
-                hasContext
+              className={`px-3 py-1 rounded-full text-sm ${
+                listening
                   ? "bg-green-100 text-green-700"
                   : "bg-gray-100 text-gray-500"
               }`}
             >
-              <Brain className="w-4 h-4" />
-              <span>
-                {hasContext
-                  ? `AI remembers ${conversationCount} conversations`
-                  : "New conversation"}
-              </span>
+              {listening ? "Listening..." : "Not listening"}
             </div>
-
-            {hasContext && (
-              <button
-                onClick={handleClearMemory}
-                disabled={memoryStatus === "loading"}
-                className="flex items-center space-x-1 px-3 py-1 rounded-full text-sm bg-orange-100 text-orange-700 hover:bg-orange-200 transition-colors"
-              >
-                {memoryStatus === "loading" ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <History className="w-4 h-4" />
-                )}
-                <span>Clear Memory</span>
-              </button>
-            )}
+            <div
+              className={`px-3 py-1 rounded-full text-sm ${
+                processing
+                  ? "bg-yellow-100 text-yellow-800"
+                  : "bg-gray-100 text-gray-500"
+              }`}
+            >
+              {processing ? "AI Processing..." : "Idle"}
+            </div>
+            <div
+              className={`px-3 py-1 rounded-full text-sm ${
+                speaking
+                  ? "bg-purple-100 text-purple-700"
+                  : "bg-gray-100 text-gray-500"
+              }`}
+            >
+              {speaking ? "AI Speaking..." : "Silent"}
+            </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Recording Card */}
+          {/* Main panel */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden mb-6">
-              <div className="p-8">
-                {/* Voice Selection */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Choose AI Voice
-                  </label>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                    {voices.map((v) => (
-                      <button
-                        key={v.id}
-                        onClick={() => setVoice(v.id)}
-                        className={`p-3 rounded-lg border transition-all duration-200 text-left ${
-                          voice === v.id
-                            ? "border-purple-500 bg-purple-50 text-purple-700"
-                            : "border-gray-200 hover:border-gray-300 text-gray-700"
-                        }`}
-                      >
-                        <div className="font-medium text-sm">{v.name}</div>
-                        <div className="text-xs text-gray-500">
-                          {v.description}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Context Indicator */}
-                {hasContext && (
-                  <div className="mb-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg border border-green-200">
-                    <div className="flex items-center space-x-2">
-                      <Brain className="w-5 h-5 text-green-600" />
-                      <div>
-                        <p className="text-sm font-medium text-green-800">
-                          AI Memory Active
-                        </p>
-                        <p className="text-xs text-green-600">
-                          The AI remembers your previous {conversationCount}{" "}
-                          conversations in this session
-                        </p>
+            <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 mb-6">
+              {/* Voice choices */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Choose AI Voice
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                  {voices.map((v) => (
+                    <button
+                      key={v.id}
+                      onClick={() => setVoice(v.id)}
+                      className={`p-3 rounded-lg border transition-all duration-200 text-left ${
+                        voice === v.id
+                          ? "border-purple-500 bg-purple-50 text-purple-700"
+                          : "border-gray-200 hover:border-gray-300 text-gray-700"
+                      }`}
+                    >
+                      <div className="font-medium text-sm">{v.name}</div>
+                      <div className="text-xs text-gray-500">
+                        {v.description}
                       </div>
-                    </div>
-                  </div>
-                )}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-                {/* Recording Status */}
-                <div className="text-center mb-8">
-                  {recording && (
-                    <div className="inline-flex items-center space-x-2 bg-red-50 text-red-600 px-6 py-3 rounded-full mb-4 animate-pulse">
-                      <div className="w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
-                      <span className="font-semibold text-lg">
-                        Recording • {formatDuration(recordingDuration)}
-                      </span>
+              {/* Control Buttons */}
+              <div className="flex items-center space-x-3 mb-4">
+                <button
+                  onClick={handleToggleMode}
+                  className={`px-4 py-3 rounded-xl text-white font-semibold transition ${
+                    modeActive
+                      ? "bg-red-500 hover:bg-red-600"
+                      : "bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+                  }`}
+                >
+                  {modeActive
+                    ? "Stop Conversation"
+                    : "Start Continuous Conversation"}
+                </button>
+
+                <button
+                  onClick={() => {
+                    if (listening) {
+                      stopListening();
+                      toast.success("Manually stopped listening.");
+                    } else {
+                      startListening();
+                    }
+                  }}
+                  className="px-3 py-2 rounded-lg border bg-white hover:bg-gray-50"
+                >
+                  {listening ? (
+                    <span className="flex items-center space-x-2">
+                      <Square className="w-4 h-4 text-red-500" />
+                      <span>Stop Listening</span>
+                    </span>
+                  ) : (
+                    <span className="flex items-center space-x-2">
+                      <Mic className="w-4 h-4 text-green-600" />
+                      <span>Listen Now</span>
+                    </span>
+                  )}
+                </button>
+
+                <button
+                  onClick={handleClearHistory}
+                  className="px-3 py-2 rounded-lg border bg-white hover:bg-gray-50"
+                >
+                  <History className="w-4 h-4 inline-block mr-2" /> Clear
+                  History
+                </button>
+
+                <button
+                  onClick={handleManualStop}
+                  className="px-3 py-2 rounded-lg border bg-white hover:bg-gray-50"
+                >
+                  <Trash2 className="w-4 h-4 inline-block mr-2" /> Full Stop &
+                  Cleanup
+                </button>
+              </div>
+
+              {/* Recording duration & small tips */}
+              <div className="text-sm text-gray-500 mb-4">
+                Recording duration:{" "}
+                <span className="font-medium text-gray-700">
+                  {formatDuration(recordingDuration)}
+                </span>
+                <span className="ml-4">
+                  Silence threshold: {SILENCE_THRESHOLD} • Silence duration:{" "}
+                  {SILENCE_DURATION}ms
+                </span>
+              </div>
+
+              {/* Input/Output blocks */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Input */}
+                <div className="bg-gray-50 rounded-xl p-4">
+                  <h4 className="font-semibold text-gray-700 mb-2">
+                    Your Latest Recording
+                  </h4>
+                  {inputAudioURL ? (
+                    <div>
+                      <audio src={inputAudioURL} controls className="w-full" />
                     </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">
+                      No recording yet. Click Start and speak.
+                    </p>
                   )}
                 </div>
 
-                {/* Recording Button */}
-                <div className="flex justify-center mb-8">
-                  <button
-                    onClick={
-                      recording ? handleStopRecording : handleStartRecording
-                    }
-                    disabled={loading}
-                    className={`
-                      relative w-32 h-32 rounded-full flex items-center justify-center transition-all duration-300 transform
-                      ${
-                        recording
-                          ? "bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 scale-110 shadow-2xl shadow-red-500/30"
-                          : "bg-gradient-to-br from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 hover:scale-105 shadow-xl shadow-purple-500/30"
-                      }
-                      ${
-                        loading
-                          ? "opacity-50 cursor-not-allowed"
-                          : "hover:shadow-2xl"
-                      }
-                    `}
-                  >
-                    {recording && (
-                      <>
-                        <div className="absolute inset-0 rounded-full border-4 border-red-300 animate-ping"></div>
-                        <div className="absolute inset-6 rounded-full border-2 border-red-200 animate-pulse"></div>
-                      </>
-                    )}
-
-                    {recording ? (
-                      <Square className="w-12 h-12 text-white fill-current" />
-                    ) : (
-                      <Mic className="w-12 h-12 text-white" />
-                    )}
-                  </button>
+                {/* Output */}
+                <div className="bg-gray-50 rounded-xl p-4">
+                  <h4 className="font-semibold text-gray-700 mb-2">
+                    AI Response
+                  </h4>
+                  {outputAudioURL ? (
+                    <div>
+                      <audio src={outputAudioURL} controls className="w-full" />
+                      <div className="flex items-center justify-between mt-2">
+                        <div className="text-sm text-gray-600">
+                          {responseText || "AI response audio ready"}
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <button
+                            onClick={handleDownloadOutput}
+                            className="text-sm px-2 py-1 border rounded"
+                          >
+                            Download
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">
+                      AI answer will appear here after processing.
+                    </p>
+                  )}
                 </div>
-
-                <div className="text-center mb-6">
-                  <p className="text-gray-600 mb-2 text-lg font-medium">
-                    {recording
-                      ? "Click to stop recording"
-                      : "Click to start voice conversation"}
-                  </p>
-                  <p className="text-gray-500">
-                    {hasContext
-                      ? "AI will remember your conversation context"
-                      : "Speak naturally and get an AI response in your chosen voice"}
-                  </p>
-                </div>
-
-                {/* Process Button */}
-                {inputAudioURL && !loading && (
-                  <button
-                    onClick={handleVoiceToVoice}
-                    className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg flex items-center justify-center space-x-2"
-                  >
-                    <Sparkles className="w-5 h-5" />
-                    <span>
-                      {hasContext
-                        ? "Continue Conversation"
-                        : "Process Voice Conversation"}
-                    </span>
-                  </button>
-                )}
               </div>
             </div>
 
-            {/* Loading State */}
-            {loading && (
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-6">
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl mb-4">
-                    <Brain className="w-8 h-8 text-white animate-pulse" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    AI Processing Your Voice
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    {hasContext
-                      ? "Analyzing your voice with conversation context..."
-                      : "Converting speech to text, generating response, and creating audio..."}
-                  </p>
-                  <div className="w-full bg-gray-200 rounded-full h-3">
-                    <div
-                      className="bg-gradient-to-r from-purple-500 to-blue-500 h-3 rounded-full animate-pulse"
-                      style={{ width: "75%" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Audio Players and Results */}
-            {(inputAudioURL || outputAudioURL) && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                {/* Input Audio */}
-                {inputAudioURL && (
-                  <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
-                        <User className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800">
-                          Your Voice
-                        </h3>
-                        <p className="text-gray-500 text-sm">
-                          Duration: {formatDuration(recordingDuration)}
-                        </p>
-                      </div>
-                    </div>
-
-                    <audio
-                      ref={inputAudioRef}
-                      src={inputAudioURL}
-                      onTimeUpdate={() =>
-                        setCurrentInputTime(
-                          inputAudioRef.current?.currentTime || 0
-                        )
-                      }
-                      onLoadedMetadata={() =>
-                        setInputDuration(inputAudioRef.current?.duration || 0)
-                      }
-                      onPlay={() => setIsPlayingInput(true)}
-                      onPause={() => setIsPlayingInput(false)}
-                      onEnded={() => setIsPlayingInput(false)}
-                      className="hidden"
-                    />
-
-                    <div className="flex items-center space-x-2 mb-3">
-                      <button
-                        onClick={handleInputPlayPause}
-                        className="w-8 h-8 bg-blue-100 hover:bg-blue-200 rounded-full flex items-center justify-center text-blue-600 transition-colors"
-                      >
-                        {isPlayingInput ? (
-                          <Pause className="w-4 h-4" />
-                        ) : (
-                          <Play className="w-4 h-4 ml-0.5" />
-                        )}
-                      </button>
-                      <div className="flex-1 text-sm text-gray-500">
-                        {formatTime(currentInputTime)} /{" "}
-                        {formatTime(recordingDuration)}
-                      </div>
-                    </div>
-
-                    {transcript && (
-                      <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-                        <div className="flex justify-between items-start mb-2">
-                          <span className="text-xs font-medium text-blue-700">
-                            TRANSCRIPT
-                          </span>
-                          <button
-                            onClick={handleCopyTranscript}
-                            className="text-blue-600 hover:text-blue-800"
-                          >
-                            <Copy className="w-3 h-3" />
-                          </button>
-                        </div>
-                        <p className="text-sm text-blue-800">{transcript}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Output Audio */}
-                {outputAudioURL && (
-                  <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                        <Bot className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800">
-                          AI Response
-                        </h3>
-                        <p className="text-gray-500 text-sm">
-                          Voice: {voices.find((v) => v.id === voice)?.name}
-                          {hasContext && (
-                            <span className="text-green-600 ml-2">
-                              • With Context
-                            </span>
-                          )}
-                        </p>
-                      </div>
-                    </div>
-
-                    <audio
-                      ref={outputAudioRef}
-                      src={outputAudioURL}
-                      onTimeUpdate={() =>
-                        setCurrentOutputTime(
-                          outputAudioRef.current?.currentTime || 0
-                        )
-                      }
-                      onLoadedMetadata={() =>
-                        setOutputDuration(outputAudioRef.current?.duration || 0)
-                      }
-                      onPlay={() => setIsPlayingOutput(true)}
-                      onPause={() => setIsPlayingOutput(false)}
-                      onEnded={() => setIsPlayingOutput(false)}
-                      className="hidden"
-                    />
-
-                    <div className="flex items-center space-x-2 mb-3">
-                      <button
-                        onClick={handleOutputPlayPause}
-                        className="w-8 h-8 bg-purple-100 hover:bg-purple-200 rounded-full flex items-center justify-center text-purple-600 transition-colors"
-                      >
-                        {isPlayingOutput ? (
-                          <Pause className="w-4 h-4" />
-                        ) : (
-                          <Play className="w-4 h-4 ml-0.5" />
-                        )}
-                      </button>
-                      <div className="flex-1 text-sm text-gray-500">
-                        {formatTime(currentOutputTime)} /{" "}
-                        {formatTime(outputDuration)}
-                      </div>
-                      <button
-                        onClick={handleDownloadOutput}
-                        className="text-purple-600 hover:text-purple-800"
-                      >
-                        <Download className="w-4 h-4" />
-                      </button>
-                    </div>
-
-                    {response && (
-                      <div className="mt-4 p-3 bg-purple-50 rounded-lg">
-                        <div className="flex justify-between items-start mb-2">
-                          <span className="text-xs font-medium text-purple-700">
-                            AI RESPONSE
-                          </span>
-                          <button
-                            onClick={handleCopyResponse}
-                            className="text-purple-600 hover:text-purple-800"
-                          >
-                            <Copy className="w-3 h-3" />
-                          </button>
-                        </div>
-                        <p className="text-sm text-purple-800">{response}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Action Buttons */}
-            {(inputAudioURL || outputAudioURL) && (
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
-                <button
-                  onClick={handleClear}
-                  className="w-full flex items-center justify-center space-x-2 bg-red-50 hover:bg-red-100 text-red-600 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  <span>Clear All</span>
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Conversation History Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sticky top-4">
-              <h3 className="font-semibold text-gray-800 mb-4 flex items-center space-x-2">
-                <MessageCircle className="w-5 h-5 text-purple-600" />
-                <span>Conversation History</span>
+            {/* Conversation history + transcript */}
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
+              <h3 className="font-semibold text-gray-800 mb-3">
+                Conversation History
               </h3>
-
               {conversationHistory.length === 0 ? (
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <MessageCircle className="w-8 h-8 text-gray-400" />
-                  </div>
-                  <p className="text-gray-500 text-sm">No conversations yet</p>
-                  <p className="text-gray-400 text-xs mt-1">
-                    Start by recording your voice
-                  </p>
+                <div className="text-sm text-gray-500">
+                  No conversation yet.
                 </div>
               ) : (
-                <div className="space-y-4 max-h-96 overflow-y-auto">
-                  {conversationHistory.map((item, index) => (
+                <div className="space-y-3 max-h-64 overflow-y-auto">
+                  {conversationHistory.map((c, i) => (
                     <div
-                      key={index}
+                      key={i}
                       className={`p-3 rounded-lg ${
-                        item.type === "user"
-                          ? "bg-blue-50 border-l-3 border-blue-500"
-                          : "bg-purple-50 border-l-3 border-purple-500"
+                        c.type === "user"
+                          ? "bg-blue-50 border-l-4 border-blue-400"
+                          : "bg-purple-50 border-l-4 border-purple-400"
                       }`}
                     >
-                      <div className="flex items-center space-x-2 mb-2">
-                        {item.type === "user" ? (
-                          <User className="w-4 h-4 text-blue-600" />
-                        ) : (
-                          <Bot className="w-4 h-4 text-purple-600" />
-                        )}
-                        <span
-                          className={`text-xs font-medium ${
-                            item.type === "user"
-                              ? "text-blue-700"
-                              : "text-purple-700"
-                          }`}
-                        >
-                          {item.type === "user" ? "YOU" : "AI"}
-                        </span>
-                        <span className="text-xs text-gray-500">
-                          {item.timestamp.toLocaleTimeString()}
-                        </span>
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="text-xs font-medium">
+                          {c.type === "user" ? "YOU" : "AI"}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {c.timestamp.toLocaleTimeString()}
+                        </div>
                       </div>
-                      <p className="text-sm text-gray-800 mb-2">{item.text}</p>
-                      {item.audioURL && (
-                        <audio controls className="w-full h-8 text-xs">
-                          <source src={item.audioURL} type="audio/mpeg" />
-                        </audio>
+                      <div className="text-sm text-gray-800">{c.text}</div>
+                      {c.audioURL && (
+                        <audio
+                          className="w-full mt-2"
+                          controls
+                          src={c.audioURL}
+                        />
                       )}
                     </div>
                   ))}
@@ -758,27 +715,67 @@ export default function VoiceToVoicePage() {
               )}
             </div>
           </div>
+
+          {/* Sidebar tips & quick actions */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sticky top-4">
+              <h3 className="font-semibold text-gray-800 mb-3 flex items-center space-x-2">
+                <MessageCircle className="w-5 h-5 text-purple-600" />
+                <span>Tips</span>
+              </h3>
+              <ul className="text-sm text-gray-600 space-y-2">
+                <li>• Use quiet environment for better transcription.</li>
+                <li>
+                  • Adjust <code>SILENCE_THRESHOLD</code> and{" "}
+                  <code>SILENCE_DURATION</code> if needed.
+                </li>
+                <li>
+                  • If AI response is delayed, increase server timeout or reduce
+                  audio length.
+                </li>
+                <li>• To test quickly, try short sentences and pause.</li>
+              </ul>
+
+              <hr className="my-4" />
+
+              <div className="text-sm text-gray-600">
+                <div className="mb-2">
+                  <strong>Quick Controls</strong>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <button
+                    className="px-3 py-2 rounded border"
+                    onClick={() => {
+                      setModeActive(false);
+                      startListening();
+                    }}
+                  >
+                    Quick Listen
+                  </button>
+                  <button
+                    className="px-3 py-2 rounded border"
+                    onClick={() => {
+                      stopListening();
+                    }}
+                  >
+                    Stop Listen
+                  </button>
+                  <button
+                    className="px-3 py-2 rounded border"
+                    onClick={handleClearHistory}
+                  >
+                    Clear History
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Tips Section */}
-        <div className="mt-8 bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-6 border border-purple-100">
-          <h4 className="font-semibold text-gray-800 mb-3 text-lg">
-            💡 Tips for Better Voice Conversations
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-            <ul className="space-y-2">
-              <li>• Speak clearly and at a normal pace</li>
-              <li>• Use a quiet environment with minimal background noise</li>
-              <li>• Ask specific questions for better AI responses</li>
-              <li>• The AI remembers your conversation context</li>
-            </ul>
-            <ul className="space-y-2">
-              <li>• Keep your microphone close but not too close</li>
-              <li>• Try different AI voices to find your preference</li>
-              <li>• Pause between sentences for clearer processing</li>
-              <li>• Clear memory if you want to start fresh</li>
-            </ul>
-          </div>
+        {/* small footer */}
+        <div className="mt-6 text-center text-sm text-gray-500">
+          Continuous conversation mode । Auto-detect silence and handle
+          request/response loop.
         </div>
       </div>
     </div>
