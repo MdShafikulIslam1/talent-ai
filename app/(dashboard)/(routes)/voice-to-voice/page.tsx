@@ -1,12 +1,14 @@
 // import VoiceToVoicePage from "@/components/VoiceToVoice.tsx/VoiceToVoice";
 
-import VoiceAssistant from "@/components/VoiceToVoice.tsx/VoiceAssistant";
+import ElevenLabsVoiceAssistant from "@/components/VoiceToVoice.tsx/ElevenLabsVoiceAssistant";
 
 const page = () => {
   return (
     <div>
       {/* <VoiceToVoicePage /> */}
-      <VoiceAssistant />
+      {/* <VoiceAssistant /> */}
+
+      <ElevenLabsVoiceAssistant />
     </div>
   );
 };
