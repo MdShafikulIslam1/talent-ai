@@ -51,8 +51,8 @@ const MusicPage = () => {
         title="Music Generation"
         description="generate music you want to play"
         icon={MusicIcon}
-        iconColor="text-orange-500"
-        bgColor="bg-orange-500/10"
+        iconColor="text-flame"
+        bgColor="bg-flame/10"
       />
       <div className="px-4 lg:px-8 mb-8">
         <div>

@@ -4,12 +4,14 @@ import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Created lazily: the OpenAI SDK throws on import when the key is missing.
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
 
 export async function POST(req: Request) {
   try {
+    if (!openai) {
+      return new NextResponse("Image generation isn't set up yet.", { status: 503 });
+    }
     const { userId } = auth();
     const body = await req.json();
     const { prompt, amount, resolution } = body;

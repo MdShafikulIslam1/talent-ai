@@ -15,8 +15,13 @@ export const formSchema = z.object({
 //   { value: "zh", label: "Chinese" },
 //   { value: "ru", label: "Russian" },
 // ];
+// Must match LANGUAGES in app/api/audio-translation/route.ts.
 export const languageOptions = [
   { label: "English", value: "English" },
   { label: "Bengali", value: "Bengali" },
   { label: "Spanish", value: "Spanish" },
+  { label: "French", value: "French" },
+  { label: "Hindi", value: "Hindi" },
+  { label: "German", value: "German" },
+  { label: "Arabic", value: "Arabic" },
 ];

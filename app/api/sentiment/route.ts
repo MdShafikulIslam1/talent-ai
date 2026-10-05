@@ -1,13 +1,9 @@
 import { checkSubscription } from "@/lib/subscription";
 import { checkApiLimit, increaseApiLimit } from "@/lib/userApiLimit";
-import { client } from "@/lib/utils";
+import { client } from "@/lib/groq";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 const groq = client;
 
@@ -36,7 +32,7 @@ export async function POST(req: Request) {
     }
 
     const completion = await groq.chat.completions.create({
-      model: "llama-3.1-8b-instant",
+      model: "openai/gpt-oss-20b",
       // model: "gpt-3.5-turbo",
       messages: [
         {

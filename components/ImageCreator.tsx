@@ -152,17 +152,17 @@
 //   const currentModelData = models.find(m => m.id === model);
 
 //   return (
-//     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 p-4">
+//     <div className="min-h-screen bg-brand-50 p-4">
 //       <div className="max-w-6xl mx-auto">
 //         {/* Header */}
 //         <div className="text-center mb-8">
-//           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl mb-4 shadow-lg">
+//           <div className="inline-flex items-center justify-center w-16 h-16 bg-brand rounded-2xl mb-4 shadow-lg">
 //             <ImageIcon className="w-8 h-8 text-white" />
 //           </div>
-//           <h1 className="text-4xl font-bold text-gray-800 mb-2">
+//           <h1 className="text-4xl font-bold text-ink-700 mb-2">
 //             AI Image Creator
 //           </h1>
-//           <p className="text-gray-600 text-lg">
+//           <p className="text-ink-500 text-lg">
 //             Generate stunning images from text descriptions with AI
 //           </p>
 //         </div>
@@ -170,15 +170,15 @@
 //         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 //           {/* Input Panel */}
 //           <div className="lg:col-span-1">
-//             <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden sticky top-4">
+//             <div className="bg-white rounded-3xl shadow-2xl border border-ink-100 overflow-hidden sticky top-4">
 //               <div className="p-6">
 //                 {/* Prompt Input */}
 //                 <div className="mb-6">
 //                   <div className="flex items-center space-x-3 mb-4">
-//                     <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+//                     <div className="w-8 h-8 bg-brand rounded-lg flex items-center justify-center">
 //                       <Palette className="w-4 h-4 text-white" />
 //                     </div>
-//                     <h3 className="text-lg font-semibold text-gray-800">
+//                     <h3 className="text-lg font-semibold text-ink-700">
 //                       Describe Your Image
 //                     </h3>
 //                   </div>
@@ -188,10 +188,10 @@
 //                       value={prompt}
 //                       onChange={(e) => setPrompt(e.target.value)}
 //                       placeholder="A futuristic city at sunset with flying cars, neon lights, and towering skyscrapers..."
-//                       className="w-full h-32 p-4 border border-gray-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-700 leading-relaxed text-sm"
+//                       className="w-full h-32 p-4 border border-ink-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent text-ink-700 leading-relaxed text-sm"
 //                       maxLength={4000}
 //                     />
-//                     <div className="absolute bottom-3 right-3 text-xs text-gray-400">
+//                     <div className="absolute bottom-3 right-3 text-xs text-ink-400">
 //                       {prompt.length}/4000
 //                     </div>
 //                   </div>
@@ -199,7 +199,7 @@
 
 //                 {/* Model Selection */}
 //                 <div className="mb-6">
-//                   <label className="block text-sm font-medium text-gray-700 mb-3">
+//                   <label className="block text-sm font-medium text-ink-700 mb-3">
 //                     <Settings className="w-4 h-4 inline mr-2" />
 //                     AI Model
 //                   </label>
@@ -214,12 +214,12 @@
 //                         }}
 //                         className={`w-full p-3 rounded-lg border transition-all duration-200 text-left ${
 //                           model === m.id
-//                             ? "border-purple-500 bg-purple-50 text-purple-700"
-//                             : "border-gray-200 hover:border-gray-300 text-gray-700"
+//                             ? "border-brand bg-brand-50 text-brand-600"
+//                             : "border-ink-200 hover:border-ink-300 text-ink-700"
 //                         }`}
 //                       >
 //                         <div className="font-medium text-sm">{m.name}</div>
-//                         <div className="text-xs text-gray-500">{m.description}</div>
+//                         <div className="text-xs text-ink-500">{m.description}</div>
 //                       </button>
 //                     ))}
 //                   </div>
@@ -227,7 +227,7 @@
 
 //                 {/* Size Selection */}
 //                 <div className="mb-6">
-//                   <label className="block text-sm font-medium text-gray-700 mb-3">
+//                   <label className="block text-sm font-medium text-ink-700 mb-3">
 //                     Image Size
 //                   </label>
 //                   <div className="grid grid-cols-1 gap-2">
@@ -237,8 +237,8 @@
 //                         onClick={() => setSize(s)}
 //                         className={`p-3 rounded-lg border transition-all duration-200 text-center ${
 //                           size === s
-//                             ? "border-purple-500 bg-purple-50 text-purple-700"
-//                             : "border-gray-200 hover:border-gray-300 text-gray-700"
+//                             ? "border-brand bg-brand-50 text-brand-600"
+//                             : "border-ink-200 hover:border-ink-300 text-ink-700"
 //                         }`}
 //                       >
 //                         <div className="font-medium text-sm">{s}</div>
@@ -252,7 +252,7 @@
 //                   <>
 //                     {/* Quality Selection */}
 //                     <div className="mb-6">
-//                       <label className="block text-sm font-medium text-gray-700 mb-3">
+//                       <label className="block text-sm font-medium text-ink-700 mb-3">
 //                         Quality
 //                       </label>
 //                       <div className="grid grid-cols-2 gap-2">
@@ -262,12 +262,12 @@
 //                             onClick={() => setQuality(q.id)}
 //                             className={`p-3 rounded-lg border transition-all duration-200 text-center ${
 //                               quality === q.id
-//                                 ? "border-purple-500 bg-purple-50 text-purple-700"
-//                                 : "border-gray-200 hover:border-gray-300 text-gray-700"
+//                                 ? "border-brand bg-brand-50 text-brand-600"
+//                                 : "border-ink-200 hover:border-ink-300 text-ink-700"
 //                             }`}
 //                           >
 //                             <div className="font-medium text-sm">{q.name}</div>
-//                             <div className="text-xs text-gray-500">{q.description}</div>
+//                             <div className="text-xs text-ink-500">{q.description}</div>
 //                           </button>
 //                         ))}
 //                       </div>
@@ -275,7 +275,7 @@
 
 //                     {/* Style Selection */}
 //                     <div className="mb-6">
-//                       <label className="block text-sm font-medium text-gray-700 mb-3">
+//                       <label className="block text-sm font-medium text-ink-700 mb-3">
 //                         Style
 //                       </label>
 //                       <div className="grid grid-cols-1 gap-2">
@@ -285,12 +285,12 @@
 //                             onClick={() => setStyle(s.id)}
 //                             className={`p-3 rounded-lg border transition-all duration-200 text-left ${
 //                               style === s.id
-//                                 ? "border-purple-500 bg-purple-50 text-purple-700"
-//                                 : "border-gray-200 hover:border-gray-300 text-gray-700"
+//                                 ? "border-brand bg-brand-50 text-brand-600"
+//                                 : "border-ink-200 hover:border-ink-300 text-ink-700"
 //                             }`}
 //                           >
 //                             <div className="font-medium text-sm">{s.name}</div>
-//                             <div className="text-xs text-gray-500">{s.description}</div>
+//                             <div className="text-xs text-ink-500">{s.description}</div>
 //                           </button>
 //                         ))}
 //                       </div>
@@ -302,7 +302,7 @@
 //                 <button
 //                   onClick={handleGenerateImage}
 //                   disabled={loading || !prompt.trim()}
-//                   className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+//                   className="w-full bg-brand hover:bg-brand-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
 //                 >
 //                   {loading ? (
 //                     <>
@@ -321,14 +321,14 @@
 //                 <div className="grid grid-cols-2 gap-3 mt-4">
 //                   <button
 //                     onClick={handleCopyPrompt}
-//                     className="flex items-center justify-center space-x-2 bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
+//                     className="flex items-center justify-center space-x-2 bg-ink-50 hover:bg-ink-100 text-ink-700 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
 //                   >
 //                     <Copy className="w-4 h-4" />
 //                     <span>Copy Prompt</span>
 //                   </button>
 //                   <button
 //                     onClick={handleClear}
-//                     className="flex items-center justify-center space-x-2 bg-red-50 hover:bg-red-100 text-red-600 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
+//                     className="flex items-center justify-center space-x-2 bg-flame-50 hover:bg-flame-100 text-flame font-medium py-3 px-4 rounded-xl transition-colors duration-200"
 //                   >
 //                     <Trash2 className="w-4 h-4" />
 //                     <span>Clear All</span>
@@ -342,20 +342,20 @@
 //           <div className="lg:col-span-2">
 //             {/* Loading State */}
 //             {loading && (
-//               <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+//               <div className="bg-white rounded-3xl shadow-xl border border-ink-100 p-8">
 //                 <div className="text-center">
-//                   <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-4">
+//                   <div className="inline-flex items-center justify-center w-16 h-16 bg-brand rounded-2xl mb-4">
 //                     <Camera className="w-8 h-8 text-white animate-pulse" />
 //                   </div>
-//                   <h3 className="text-xl font-semibold text-gray-800 mb-2">
+//                   <h3 className="text-xl font-semibold text-ink-700 mb-2">
 //                     AI Creating Your Image
 //                   </h3>
-//                   <p className="text-gray-600 mb-4">
+//                   <p className="text-ink-500 mb-4">
 //                     Our AI is bringing your vision to life...
 //                   </p>
-//                   <div className="w-full bg-gray-200 rounded-full h-3">
+//                   <div className="w-full bg-ink-200 rounded-full h-3">
 //                     <div
-//                       className="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full animate-pulse"
+//                       className=" bg-brand h-3 rounded-full animate-pulse"
 //                       style={{ width: "75%" }}
 //                     ></div>
 //                   </div>
@@ -369,26 +369,26 @@
 //                 {generatedImages.map((image, index) => (
 //                   <div
 //                     key={index}
-//                     className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden transform transition-all duration-500 hover:shadow-2xl"
+//                     className="bg-white rounded-3xl shadow-xl border border-ink-100 overflow-hidden transform transition-all duration-500 hover:shadow-2xl"
 //                   >
 //                     <div className="p-6">
 //                       <div className="flex items-center justify-between mb-4">
 //                         <div className="flex items-center space-x-3">
-//                           <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-500 rounded-xl flex items-center justify-center">
+//                           <div className="w-10 h-10 bg-brand rounded-xl flex items-center justify-center">
 //                             <Eye className="w-5 h-5 text-white" />
 //                           </div>
 //                           <div>
-//                             <h3 className="font-semibold text-gray-800">
+//                             <h3 className="font-semibold text-ink-700">
 //                               Generated Image #{index + 1}
 //                             </h3>
-//                             <p className="text-sm text-gray-500">
+//                             <p className="text-sm text-ink-500">
 //                               {model.toUpperCase()} • {size} • {model === "dall-e-3" ? `${quality} quality • ${style} style` : ""}
 //                             </p>
 //                           </div>
 //                         </div>
 //                         <button
 //                           onClick={() => handleDownloadImage(image.url, index)}
-//                           className="p-2 rounded-lg bg-green-50 hover:bg-green-100 text-green-600 transition-colors"
+//                           className="p-2 rounded-lg bg-brand-50 hover:bg-brand-100 text-brand-600 transition-colors"
 //                         >
 //                           <Download className="w-5 h-5" />
 //                         </button>
@@ -407,11 +407,11 @@
 //                       </div>
 
 //                       {image.revised_prompt && (
-//                         <div className="mt-4 p-4 bg-gray-50 rounded-xl">
-//                           <h4 className="text-sm font-medium text-gray-700 mb-2">
+//                         <div className="mt-4 p-4 bg-ink-50 rounded-xl">
+//                           <h4 className="text-sm font-medium text-ink-700 mb-2">
 //                             AI Revised Prompt:
 //                           </h4>
-//                           <p className="text-sm text-gray-600 leading-relaxed">
+//                           <p className="text-sm text-ink-500 leading-relaxed">
 //                             {image.revised_prompt}
 //                           </p>
 //                         </div>
@@ -424,24 +424,24 @@
 
 //             {/* Empty State */}
 //             {!loading && generatedImages.length === 0 && (
-//               <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-12 text-center">
-//                 <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 rounded-3xl mb-6">
-//                   <ImageIcon className="w-10 h-10 text-purple-500" />
+//               <div className="bg-white rounded-3xl shadow-xl border border-ink-100 p-12 text-center">
+//                 <div className="inline-flex items-center justify-center w-20 h-20 bg-brand-100 rounded-3xl mb-6">
+//                   <ImageIcon className="w-10 h-10 text-brand" />
 //                 </div>
-//                 <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+//                 <h3 className="text-2xl font-semibold text-ink-700 mb-4">
 //                   Ready to Create Magic?
 //                 </h3>
-//                 <p className="text-gray-600 mb-6 max-w-md mx-auto">
+//                 <p className="text-ink-500 mb-6 max-w-md mx-auto">
 //                   Describe your vision in the prompt box and watch as AI transforms your words into stunning visual art.
 //                 </p>
 //                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-lg mx-auto text-sm">
-//                   <div className="bg-purple-50 p-4 rounded-xl">
-//                     <Zap className="w-5 h-5 text-purple-500 mx-auto mb-2" />
-//                     <p className="text-purple-700 font-medium">Fast Generation</p>
+//                   <div className="bg-brand-50 p-4 rounded-xl">
+//                     <Zap className="w-5 h-5 text-brand mx-auto mb-2" />
+//                     <p className="text-brand-600 font-medium">Fast Generation</p>
 //                   </div>
-//                   <div className="bg-pink-50 p-4 rounded-xl">
-//                     <Sparkles className="w-5 h-5 text-pink-500 mx-auto mb-2" />
-//                     <p className="text-pink-700 font-medium">High Quality</p>
+//                   <div className="bg-brand-50 p-4 rounded-xl">
+//                     <Sparkles className="w-5 h-5 text-brand mx-auto mb-2" />
+//                     <p className="text-brand-600 font-medium">High Quality</p>
 //                   </div>
 //                 </div>
 //               </div>
@@ -455,7 +455,7 @@
 //             <div className="relative max-w-4xl max-h-[90vh] w-full">
 //               <button
 //                 onClick={() => setSelectedImage(null)}
-//                 className="absolute -top-10 right-0 text-white hover:text-gray-300 transition-colors"
+//                 className="absolute -top-10 right-0 text-white hover:text-ink-300 transition-colors"
 //               >
 //                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 //                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -471,11 +471,11 @@
 //         )}
 
 //         {/* Tips Section */}
-//         <div className="mt-8 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-100">
-//           <h4 className="font-semibold text-gray-800 mb-3 text-lg">
+//         <div className="mt-8 bg-brand-50 rounded-2xl p-6 border border-brand-100">
+//           <h4 className="font-semibold text-ink-700 mb-3 text-lg">
 //             🎨 Tips for Better Image Generation
 //           </h4>
-//           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+//           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-ink-500">
 //             <ul className="space-y-2">
 //               <li>• Be specific about colors, lighting, and mood</li>
 //               <li>• Include artistic styles (e.g., "watercolor", "digital art")</li>
@@ -753,20 +753,20 @@ export default function ImageCreatorPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 p-4">
+    <div className="min-h-screen bg-brand-50 p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-2xl mb-4 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-brand rounded-2xl mb-4 shadow-lg">
             <ImageIcon />
           </div>
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+          <h1 className="text-4xl font-bold text-ink-700 mb-2">
             Free AI Image Creator
           </h1>
-          <p className="text-gray-600 text-lg">
+          <p className="text-ink-500 text-lg">
             Generate stunning images completely free with open-source AI
           </p>
-          <div className="inline-flex items-center bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium mt-2">
+          <div className="inline-flex items-center bg-brand-100 text-brand-600 px-4 py-2 rounded-full text-sm font-medium mt-2">
             <Zap />
             <span className="ml-2">100% Free • No OpenAI API costs</span>
           </div>
@@ -775,15 +775,15 @@ export default function ImageCreatorPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Input Panel */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden sticky top-4">
+            <div className="bg-white rounded-3xl shadow-2xl border border-ink-100 overflow-hidden sticky top-4">
               <div className="p-6">
                 {/* Prompt Input */}
                 <div className="mb-6">
                   <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
+                    <div className="w-8 h-8 bg-brand rounded-lg flex items-center justify-center">
                       <Palette />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-800">
+                    <h3 className="text-lg font-semibold text-ink-700">
                       Describe Your Image
                     </h3>
                   </div>
@@ -793,10 +793,10 @@ export default function ImageCreatorPage() {
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value)}
                       placeholder="A beautiful landscape with mountains and a lake at sunset..."
-                      className="w-full h-32 p-4 border border-gray-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-700 leading-relaxed text-sm"
+                      className="w-full h-32 p-4 border border-ink-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent text-ink-700 leading-relaxed text-sm"
                       maxLength={1000}
                     />
-                    <div className="absolute bottom-3 right-3 text-xs text-gray-400">
+                    <div className="absolute bottom-3 right-3 text-xs text-ink-400">
                       {prompt.length}/1000
                     </div>
                   </div>
@@ -804,7 +804,7 @@ export default function ImageCreatorPage() {
 
                 {/* Provider Selection */}
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                  <label className="block text-sm font-medium text-ink-700 mb-3">
                     <Settings />
                     <span className="ml-2">AI Provider</span>
                   </label>
@@ -815,19 +815,19 @@ export default function ImageCreatorPage() {
                         onClick={() => setProvider(p.id)}
                         className={`w-full p-3 rounded-lg border transition-all duration-200 text-left ${
                           provider === p.id
-                            ? "border-green-500 bg-green-50 text-green-700"
-                            : "border-gray-200 hover:border-gray-300 text-gray-700"
+                            ? "border-brand bg-brand-50 text-brand-600"
+                            : "border-ink-200 hover:border-ink-300 text-ink-700"
                         }`}
                       >
                         <div className="flex items-center justify-between">
                           <div>
                             <div className="font-medium text-sm">{p.name}</div>
-                            <div className="text-xs text-gray-500">{p.description}</div>
+                            <div className="text-xs text-ink-500">{p.description}</div>
                           </div>
                           <span className={`text-xs px-2 py-1 rounded-full ${
                             p.badge === "100% FREE" 
-                              ? "bg-green-100 text-green-800" 
-                              : "bg-blue-100 text-blue-800"
+                              ? "bg-brand-100 text-brand-600" 
+                              : "bg-brand-100 text-brand-600"
                           }`}>
                             {p.badge}
                           </span>
@@ -840,7 +840,7 @@ export default function ImageCreatorPage() {
                 {/* Model Selection */}
                 {provider === "pollinations" ? null : (
                   <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <label className="block text-sm font-medium text-ink-700 mb-3">
                       AI Model
                     </label>
                     <div className="space-y-2">
@@ -850,12 +850,12 @@ export default function ImageCreatorPage() {
                           onClick={() => setModel(key)}
                           className={`w-full p-3 rounded-lg border transition-all duration-200 text-left ${
                             model === key
-                              ? "border-green-500 bg-green-50 text-green-700"
-                              : "border-gray-200 hover:border-gray-300 text-gray-700"
+                              ? "border-brand bg-brand-50 text-brand-600"
+                              : "border-ink-200 hover:border-ink-300 text-ink-700"
                           }`}
                         >
                           <div className="font-medium text-sm">{m.name}</div>
-                          <div className="text-xs text-gray-500">{m.description}</div>
+                          <div className="text-xs text-ink-500">{m.description}</div>
                         </button>
                       ))}
                     </div>
@@ -866,7 +866,7 @@ export default function ImageCreatorPage() {
                 <button
                   onClick={handleGenerateImage}
                   disabled={loading || !prompt.trim()}
-                  className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                  className="w-full bg-brand hover:bg-brand-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                 >
                   {loading ? (
                     <>
@@ -885,14 +885,14 @@ export default function ImageCreatorPage() {
                 <div className="grid grid-cols-2 gap-3 mt-4">
                   <button
                     onClick={handleCopyPrompt}
-                    className="flex items-center justify-center space-x-2 bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
+                    className="flex items-center justify-center space-x-2 bg-ink-50 hover:bg-ink-100 text-ink-700 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
                   >
                     <Copy />
                     <span>Copy Prompt</span>
                   </button>
                   <button
                     onClick={handleClear}
-                    className="flex items-center justify-center space-x-2 bg-red-50 hover:bg-red-100 text-red-600 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
+                    className="flex items-center justify-center space-x-2 bg-flame-50 hover:bg-flame-100 text-flame font-medium py-3 px-4 rounded-xl transition-colors duration-200"
                   >
                     <Trash2 />
                     <span>Clear All</span>
@@ -906,20 +906,20 @@ export default function ImageCreatorPage() {
           <div className="lg:col-span-2">
             {/* Loading State */}
             {loading && (
-              <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+              <div className="bg-white rounded-3xl shadow-xl border border-ink-100 p-8">
                 <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-blue-500 rounded-2xl mb-4">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-brand rounded-2xl mb-4">
                     <Camera />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                  <h3 className="text-xl font-semibold text-ink-700 mb-2">
                     Free AI Creating Your Image
                   </h3>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-ink-500 mb-4">
                     Using open-source AI to bring your vision to life...
                   </p>
-                  <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div className="w-full bg-ink-200 rounded-full h-3">
                     <div
-                      className="bg-gradient-to-r from-green-500 to-blue-500 h-3 rounded-full animate-pulse"
+                      className=" bg-brand h-3 rounded-full animate-pulse"
                       style={{ width: "75%" }}
                     ></div>
                   </div>
@@ -933,26 +933,26 @@ export default function ImageCreatorPage() {
                 {generatedImages.map((image, index) => (
                   <div
                     key={index}
-                    className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden transform transition-all duration-500 hover:shadow-2xl"
+                    className="bg-white rounded-3xl shadow-xl border border-ink-100 overflow-hidden transform transition-all duration-500 hover:shadow-2xl"
                   >
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center space-x-3">
-                          <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-500 rounded-xl flex items-center justify-center">
+                          <div className="w-10 h-10 bg-brand rounded-xl flex items-center justify-center">
                             <Eye />
                           </div>
                           <div>
-                            <h3 className="font-semibold text-gray-800">
+                            <h3 className="font-semibold text-ink-700">
                               Free Generated Image #{index + 1}
                             </h3>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-ink-500">
                               {provider} • {model} • {size} • 100% FREE
                             </p>
                           </div>
                         </div>
                         <button
                           onClick={() => handleDownloadImage(image.url, index)}
-                          className="p-2 rounded-lg bg-green-50 hover:bg-green-100 text-green-600 transition-colors"
+                          className="p-2 rounded-lg bg-brand-50 hover:bg-brand-100 text-brand-600 transition-colors"
                         >
                           <Download />
                         </button>
@@ -971,11 +971,11 @@ export default function ImageCreatorPage() {
                       </div>
 
                       {image.revised_prompt && (
-                        <div className="mt-4 p-4 bg-gray-50 rounded-xl">
-                          <h4 className="text-sm font-medium text-gray-700 mb-2">
+                        <div className="mt-4 p-4 bg-ink-50 rounded-xl">
+                          <h4 className="text-sm font-medium text-ink-700 mb-2">
                             Generated from prompt:
                           </h4>
-                          <p className="text-sm text-gray-600 leading-relaxed">
+                          <p className="text-sm text-ink-500 leading-relaxed">
                             {image.revised_prompt}
                           </p>
                         </div>
@@ -988,24 +988,24 @@ export default function ImageCreatorPage() {
 
             {/* Empty State */}
             {!loading && generatedImages.length === 0 && (
-              <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-12 text-center">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-100 to-blue-100 rounded-3xl mb-6">
+              <div className="bg-white rounded-3xl shadow-xl border border-ink-100 p-12 text-center">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-brand-100 rounded-3xl mb-6">
                   <ImageIcon />
                 </div>
-                <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+                <h3 className="text-2xl font-semibold text-ink-700 mb-4">
                   Ready to Create Free AI Art?
                 </h3>
-                <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                <p className="text-ink-500 mb-6 max-w-md mx-auto">
                   Describe your vision and watch as free, open-source AI transforms your words into beautiful images at no cost.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-lg mx-auto text-sm">
-                  <div className="bg-green-50 p-4 rounded-xl">
+                  <div className="bg-brand-50 p-4 rounded-xl">
                     <Zap />
-                    <p className="text-green-700 font-medium mt-2">100% Free Forever</p>
+                    <p className="text-brand-600 font-medium mt-2">100% Free Forever</p>
                   </div>
-                  <div className="bg-blue-50 p-4 rounded-xl">
+                  <div className="bg-brand-50 p-4 rounded-xl">
                     <Sparkles />
-                    <p className="text-blue-700 font-medium mt-2">Open Source AI</p>
+                    <p className="text-brand-600 font-medium mt-2">Open Source AI</p>
                   </div>
                 </div>
               </div>
@@ -1019,7 +1019,7 @@ export default function ImageCreatorPage() {
             <div className="relative max-w-4xl max-h-[90vh] w-full">
               <button
                 onClick={() => setSelectedImage(null)}
-                className="absolute -top-10 right-0 text-white hover:text-gray-300 transition-colors"
+                className="absolute -top-10 right-0 text-white hover:text-ink-300 transition-colors"
               >
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1035,11 +1035,11 @@ export default function ImageCreatorPage() {
         )}
 
         {/* Tips Section */}
-        <div className="mt-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-6 border border-green-100">
-          <h4 className="font-semibold text-gray-800 mb-3 text-lg">
+        <div className="mt-8 bg-brand-50 rounded-2xl p-6 border border-brand-100">
+          <h4 className="font-semibold text-ink-700 mb-3 text-lg">
             🎨 Tips for Better Free Image Generation
           </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-ink-500">
             <ul className="space-y-2">
               <li>• Be specific about colors, lighting, and mood</li>
               <li>• Include artistic styles (e.g., "watercolor", "digital art")</li>

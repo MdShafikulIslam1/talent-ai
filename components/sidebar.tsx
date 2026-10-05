@@ -30,126 +30,126 @@ const routes = [
     label: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
-    color: "text-sky-400",
-    bgColor: "bg-sky-500/10",
-    hoverColor: "hover:bg-sky-500/20",
+    color: "text-brand-300",
+    bgColor: "bg-brand/10",
+    hoverColor: "hover:bg-brand/20",
     category: "main"
   },
   {
     label: "Conversation",
     href: "/conversation",
     icon: MessageSquare,
-    color: "text-violet-400",
-    bgColor: "bg-violet-500/10",
-    hoverColor: "hover:bg-violet-500/20",
+    color: "text-brand-300",
+    bgColor: "bg-brand/10",
+    hoverColor: "hover:bg-brand/20",
     category: "ai"
   },
   // {
   //   label: "Image Creator",
   //   href: "/image-creator",
   //   icon: ImageIcon,
-  //   color: "text-fuchsia-400",
-  //   bgColor: "bg-fuchsia-500/10",
-  //   hoverColor: "hover:bg-fuchsia-500/20",
+  //   color: "text-brand-300",
+  //   bgColor: "bg-brand/10",
+  //   hoverColor: "hover:bg-brand/20",
   //   category: "ai"
   // },
   {
     label: "Code Generation",
     href: "/code",
     icon: CodeIcon,
-    color: "text-emerald-400",
-    bgColor: "bg-emerald-500/10",
-    hoverColor: "hover:bg-emerald-500/20",
+    color: "text-brand-300",
+    bgColor: "bg-brand/10",
+    hoverColor: "hover:bg-brand/20",
     category: "ai"
   },
   {
     label: "Sentiment Analysis",
     href: "/sentiment",
     icon: MessageCircle,
-    color: "text-purple-400",
-    bgColor: "bg-purple-500/10",
-    hoverColor: "hover:bg-purple-500/20",
+    color: "text-brand-300",
+    bgColor: "bg-brand/10",
+    hoverColor: "hover:bg-brand/20",
     category: "ai"
   },
   {
     label: "Voice to Text",
     href: "/voice-to-text",
     icon: Mic,
-    color: "text-red-400",
-    bgColor: "bg-red-500/10",
-    hoverColor: "hover:bg-red-500/20",
+    color: "text-flame",
+    bgColor: "bg-flame/10",
+    hoverColor: "hover:bg-flame/20",
     category: "ai"
   },
   {
     label: "Text to Audio",
     href: "/text-to-audio",
     icon: Volume2,
-    color: "text-blue-400",
-    bgColor: "bg-blue-500/10",
-    hoverColor: "hover:bg-blue-500/20",
+    color: "text-brand-300",
+    bgColor: "bg-brand/10",
+    hoverColor: "hover:bg-brand/20",
     category: "ai"
   },
   {
     label: "Voice to Voice",
     href: "/voice-to-voice",
     icon: AudioLines,
-    color: "text-teal-400",
-    bgColor: "bg-teal-500/10",
-    hoverColor: "hover:bg-teal-500/20",
+    color: "text-brand-300",
+    bgColor: "bg-brand/10",
+    hoverColor: "hover:bg-brand/20",
     category: "ai"
   },
   // {
   //   label: "Speech to Text Translation",
   //   href: "/audio-translation",
   //   icon: Languages,
-  //   color: "text-pink-400",
-  //   bgColor: "bg-pink-500/10",
-  //   hoverColor: "hover:bg-pink-500/20",
+  //   color: "text-brand-300",
+  //   bgColor: "bg-brand/10",
+  //   hoverColor: "hover:bg-brand/20",
   //   category: "tools"
   // },
   {
     label: "Text Translation",
     href: "/translation",
     icon: Globe,
-    color: "text-indigo-400",
-    bgColor: "bg-indigo-500/10",
-    hoverColor: "hover:bg-indigo-500/20",
+    color: "text-brand-300",
+    bgColor: "bg-brand/10",
+    hoverColor: "hover:bg-brand/20",
     category: "tools"
   },
   {
     label: "Grammar Correction",
     href: "/grammar-correction",
     icon: CheckCheck,
-    color: "text-green-400",
-    bgColor: "bg-green-500/10",
-    hoverColor: "hover:bg-green-500/20",
+    color: "text-brand-300",
+    bgColor: "bg-brand/10",
+    hoverColor: "hover:bg-brand/20",
     category: "tools"
   },
   {
     label: "Summarize Text",
     href: "/summarize-text",
     icon: FileText,
-    color: "text-orange-400",
-    bgColor: "bg-orange-500/10",
-    hoverColor: "hover:bg-orange-500/20",
+    color: "text-flame",
+    bgColor: "bg-flame/10",
+    hoverColor: "hover:bg-flame/20",
     category: "tools"
   },
   {
     label: "Smart Paraphraser",
     href: "/smart-paraphraser",
     icon: Repeat,
-    color: "text-cyan-400",
-    bgColor: "bg-cyan-500/10",
-    hoverColor: "hover:bg-cyan-500/20",
+    color: "text-brand-300",
+    bgColor: "bg-brand/10",
+    hoverColor: "hover:bg-brand/20",
     category: "tools"
   },
   {
     label: "Settings",
     href: "/settings",
     icon: Settings,
-    color: "text-gray-400",
-    bgColor: "bg-gray-500/10",
-    hoverColor: "hover:bg-gray-500/20",
+    color: "text-ink-400",
+    bgColor: "bg-ink-500/10",
+    hoverColor: "hover:bg-ink-500/20",
     category: "config"
   },
 ];
@@ -178,23 +178,23 @@ const Sidebar = ({ apiLimitCount = 0, isPro }: SidebarProps) => {
   }, {} as Record<string, typeof routes>);
 
   return (
-    <div className="relative space-y-4 py-6 h-full flex flex-col bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 text-white overflow-hidden">
+    <div className="relative space-y-4 py-6 h-full flex flex-col bg-ink text-white overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-4 -left-4 w-24 h-24 bg-blue-500/10 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute top-1/3 -right-8 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-1/4 -left-6 w-20 h-20 bg-pink-500/10 rounded-full blur-xl animate-pulse delay-2000"></div>
+        <div className="absolute -top-4 -left-4 w-24 h-24 bg-brand/10 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-1/3 -right-8 w-32 h-32 bg-brand/10 rounded-full blur-2xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-1/4 -left-6 w-20 h-20 bg-brand/10 rounded-full blur-xl animate-pulse delay-2000"></div>
       </div>
 
       {/* Logo Section - Fixed at top */}
       <div className="relative px-4 py-2 flex-shrink-0">
         <Link href={"/dashboard"} className="flex items-center pl-3 mb-6 group">
           <div className="flex items-center space-x-3">
-            <div className="relative w-10 h-10 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-blue-500/25 transition-all duration-300 group-hover:scale-110">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-400 rounded-xl blur opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative w-10 h-10 bg-brand rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-brand/25 transition-all duration-300 group-hover:scale-110">
+              <div className="absolute inset-0 bg-brand-300 rounded-xl blur opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative w-5 h-5 bg-white rounded-md shadow-inner"></div>
             </div>
-            <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent group-hover:from-blue-300 group-hover:via-purple-300 group-hover:to-pink-300 transition-all duration-300">
+            <div className="text-2xl font-bold text-brand-300 group-hover:text-brand-300 transition-all duration-300">
               Talent-AI
             </div>
           </div>
@@ -209,8 +209,8 @@ const Sidebar = ({ apiLimitCount = 0, isPro }: SidebarProps) => {
             <div key={categoryKey} className="space-y-2">
               {/* Category Header */}
               <div className="flex items-center space-x-2 px-3 py-2">
-                <div className="w-1 h-4 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
-                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <div className="w-1 h-4 bg-brand rounded-full"></div>
+                <span className="text-xs font-semibold text-ink-400 uppercase tracking-wider">
                   {categories[categoryKey as keyof typeof categories]?.label}
                 </span>
               </div>
@@ -227,13 +227,13 @@ const Sidebar = ({ apiLimitCount = 0, isPro }: SidebarProps) => {
                         "relative flex items-center justify-start rounded-xl text-sm cursor-pointer group p-3 mx-2 transition-all duration-300 transform hover:scale-[1.02]",
                         isActive
                           ? `text-white ${route.bgColor} shadow-lg border border-white/10`
-                          : `text-gray-300 hover:text-white ${route.hoverColor} hover:shadow-md`,
+                          : `text-ink-300 hover:text-white ${route.hoverColor} hover:shadow-md`,
                         "backdrop-blur-sm"
                       )}
                     >
                       {/* Active indicator */}
                       {isActive && (
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-r-full"></div>
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-brand rounded-r-full"></div>
                       )}
                       
                       {/* Icon container */}
@@ -268,20 +268,20 @@ const Sidebar = ({ apiLimitCount = 0, isPro }: SidebarProps) => {
       {/* Free Counter - Fixed at bottom */}
       {!isPro && (
         <div className="relative px-4 flex-shrink-0">
-          <div className="mx-2 p-4 rounded-xl bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 backdrop-blur-sm">
+          <div className="mx-2 p-4 rounded-xl bg-flame/10 border border-flame/20 backdrop-blur-sm">
             <FreeCounter apiLimitCount={apiLimitCount} />
           </div>
         </div>
       )}
 
       {/* Bottom gradient overlay */}
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-slate-900 to-transparent pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-20 bg-ink pointer-events-none"></div>
 
       {/* Custom Scrollbar Styles */}
       <style jsx>{`
         .custom-scrollbar {
           scrollbar-width: thin;
-          scrollbar-color: rgba(100, 116, 139, 0.4) rgba(51, 65, 85, 0.1);
+          scrollbar-color: rgba(139, 139, 144, 0.4) rgba(17, 17, 17, 0.05);
         }
 
         .custom-scrollbar::-webkit-scrollbar {
@@ -289,27 +289,19 @@ const Sidebar = ({ apiLimitCount = 0, isPro }: SidebarProps) => {
         }
 
         .custom-scrollbar::-webkit-scrollbar-track {
-          background: rgba(51, 65, 85, 0.1);
+          background: rgba(17, 17, 17, 0.05);
           border-radius: 10px;
           margin: 4px 0;
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: linear-gradient(
-            to bottom,
-            rgba(59, 130, 246, 0.4),
-            rgba(139, 92, 246, 0.4)
-          );
+          background: rgba(124, 92, 250, 0.4);
           border-radius: 10px;
-          border: 2px solid rgba(51, 65, 85, 0.1);
+          border: 2px solid rgba(17, 17, 17, 0.05);
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(
-            to bottom,
-            rgba(59, 130, 246, 0.6),
-            rgba(139, 92, 246, 0.6)
-          );
+          background: rgba(124, 92, 250, 0.6);
         }
 
         .custom-scrollbar::-webkit-scrollbar-corner {

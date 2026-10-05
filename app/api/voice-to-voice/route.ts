@@ -201,7 +201,7 @@
 
 // ----------------------- ElevenLabs Proxy Route -----------------------
 import { checkApiLimit } from "@/lib/userApiLimit";
-import { client } from "@/lib/utils"; // Groq client
+import { client } from "@/lib/groq"; // Groq client
 import { auth } from "@clerk/nextjs";
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import { NextResponse } from "next/server";
@@ -321,10 +321,11 @@ export async function POST(req: Request) {
     // Step 2: AI Response (Groq Chat) with conversation context
     console.log("Step 2: Generating AI response with context...");
     const chatCompletion = await client.chat.completions.create({
-      model: "llama-3.1-8b-instant",
+      model: "openai/gpt-oss-20b",
       messages: messages,
       temperature: 0.7,
-      max_tokens: 200,
+      // gpt-oss reasons before answering; leave room so short replies never come back empty.
+      max_tokens: 400,
       top_p: 0.9,
     });
 

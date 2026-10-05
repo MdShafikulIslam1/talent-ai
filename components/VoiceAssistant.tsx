@@ -220,9 +220,9 @@ const VoiceAssistant: React.FC = () => {
     switch (response.type) {
       case 'features':
         return (
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200">
-            <h3 className="text-xl font-bold text-gray-800 mb-3">{safeGet(response, 'title', '🚀 Our Features')}</h3>
-            <p className="text-gray-600 mb-4">{safeGet(response, 'message', 'Here are our amazing AI-powered features:')}</p>
+          <div className=" bg-brand-50 rounded-2xl p-6 border border-brand-100">
+            <h3 className="text-xl font-bold text-ink-700 mb-3">{safeGet(response, 'title', '🚀 Our Features')}</h3>
+            <p className="text-ink-500 mb-4">{safeGet(response, 'message', 'Here are our amazing AI-powered features:')}</p>
             
             {/* Show actual website features */}
             <div className="grid gap-3">
@@ -231,36 +231,36 @@ const VoiceAssistant: React.FC = () => {
                      onClick={() => handleNavigation(feature.route)}>
                   <span className="text-xl">{feature.icon}</span>
                   <div className="flex-1">
-                    <span className="font-medium text-gray-800">{feature.name}</span>
-                    <p className="text-sm text-gray-600 mt-1">{feature.description}</p>
+                    <span className="font-medium text-ink-700">{feature.name}</span>
+                    <p className="text-sm text-ink-500 mt-1">{feature.description}</p>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-gray-400" />
+                  <ArrowRight className="w-4 h-4 text-ink-400" />
                 </div>
               ))}
             </div>
             
-            <div className="mt-4 p-3 bg-blue-100 rounded-xl">
-              <p className="text-sm text-blue-800">{safeGet(response, 'suggestion', 'Click any feature to explore it, or say "tell me more about [feature name]"!')}</p>
+            <div className="mt-4 p-3 bg-brand-100 rounded-xl">
+              <p className="text-sm text-brand-600">{safeGet(response, 'suggestion', 'Click any feature to explore it, or say "tell me more about [feature name]"!')}</p>
             </div>
           </div>
         );
 
       case 'detailed_features':
         return (
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200">
-            <h3 className="text-xl font-bold text-gray-800 mb-3">{safeGet(response, 'title', '✨ Feature Details')}</h3>
-            <p className="text-gray-600 mb-4">{safeGet(response, 'message', 'Here are detailed descriptions of our features:')}</p>
+          <div className=" bg-brand-50 rounded-2xl p-6 border border-brand-100">
+            <h3 className="text-xl font-bold text-ink-700 mb-3">{safeGet(response, 'title', '✨ Feature Details')}</h3>
+            <p className="text-ink-500 mb-4">{safeGet(response, 'message', 'Here are detailed descriptions of our features:')}</p>
             <div className="space-y-4">
               {features.slice(0, 4).map((feature, index) => (
                 <div key={index} className="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-                  <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
+                  <h4 className="font-semibold text-ink-700 mb-2 flex items-center">
                     <span className="mr-3 text-lg">{feature.icon}</span>
                     {feature.name}
                   </h4>
-                  <p className="text-gray-600 text-sm leading-relaxed mb-3">{feature.description}</p>
+                  <p className="text-ink-500 text-sm leading-relaxed mb-3">{feature.description}</p>
                   <button
                     onClick={() => handleNavigation(feature.route)}
-                    className="text-purple-600 hover:text-purple-700 text-sm font-medium flex items-center space-x-1"
+                    className="text-brand-600 hover:text-brand-600 text-sm font-medium flex items-center space-x-1"
                   >
                     <span>Try it now</span>
                     <ArrowRight className="w-3 h-3" />
@@ -268,8 +268,8 @@ const VoiceAssistant: React.FC = () => {
                 </div>
               ))}
             </div>
-            <div className="mt-4 p-3 bg-purple-100 rounded-xl">
-              <p className="text-sm text-purple-800">{safeGet(response, 'suggestion', 'Want to try a specific feature? Just say "go to [feature name]"!')}</p>
+            <div className="mt-4 p-3 bg-brand-100 rounded-xl">
+              <p className="text-sm text-brand-600">{safeGet(response, 'suggestion', 'Want to try a specific feature? Just say "go to [feature name]"!')}</p>
             </div>
           </div>
         );
@@ -277,25 +277,25 @@ const VoiceAssistant: React.FC = () => {
       case 'navigation':
         const navContent = response.content as ResponseContent;
         return (
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200">
-            <h3 className="text-xl font-bold text-gray-800 mb-3">{response.title}</h3>
-            <p className="text-gray-600 mb-4">{response.message}</p>
+          <div className=" bg-brand-50 rounded-2xl p-6 border border-brand-100">
+            <h3 className="text-xl font-bold text-ink-700 mb-3">{response.title}</h3>
+            <p className="text-ink-500 mb-4">{response.message}</p>
             <div className="bg-white p-4 rounded-xl shadow-sm">
-              <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
+              <h4 className="font-semibold text-ink-700 mb-2 flex items-center">
                 <span className="mr-2 text-lg">{navContent?.icon || '🔗'}</span>
                 {navContent?.name || 'Destination'}
               </h4>
-              <p className="text-gray-600 text-sm mb-4">{navContent?.description || 'Feature description'}</p>
+              <p className="text-ink-500 text-sm mb-4">{navContent?.description || 'Feature description'}</p>
               <button
                 onClick={() => handleNavigation(navContent?.route || '/')}
-                className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-xl font-medium hover:from-green-600 hover:to-emerald-600 transition-all flex items-center space-x-2 w-full justify-center"
+                className=" bg-brand text-white px-6 py-3 rounded-xl font-medium hover:bg-brand-600 transition-all flex items-center space-x-2 w-full justify-center"
               >
                 <span>Navigate Now</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-            <div className="mt-4 p-3 bg-green-100 rounded-xl">
-              <p className="text-sm text-green-800">{response.suggestion}</p>
+            <div className="mt-4 p-3 bg-brand-100 rounded-xl">
+              <p className="text-sm text-brand-600">{response.suggestion}</p>
             </div>
           </div>
         );
@@ -309,52 +309,52 @@ const VoiceAssistant: React.FC = () => {
         ];
 
         return (
-          <div className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl p-6 border border-cyan-200">
-            <h3 className="text-xl font-bold text-gray-800 mb-3">🤖 Voice Commands Help</h3>
-            <p className="text-gray-600 mb-4">I can understand natural speech! Here are some examples:</p>
+          <div className=" bg-brand-50 rounded-2xl p-6 border border-brand-100">
+            <h3 className="text-xl font-bold text-ink-700 mb-3">🤖 Voice Commands Help</h3>
+            <p className="text-ink-500 mb-4">I can understand natural speech! Here are some examples:</p>
             <div className="space-y-3">
               {helpCommands.map((item, index) => (
                 <div key={index} className="bg-white p-4 rounded-xl shadow-sm">
-                  <div className="font-medium text-gray-800 mb-1">{item.text}</div>
-                  <div className="text-sm text-cyan-600 bg-cyan-50 px-3 py-1 rounded-lg inline-block">
+                  <div className="font-medium text-ink-700 mb-1">{item.text}</div>
+                  <div className="text-sm text-brand-600 bg-brand-50 px-3 py-1 rounded-lg inline-block">
                     {item.example}
                   </div>
                 </div>
               ))}
             </div>
-            <div className="mt-4 p-3 bg-cyan-100 rounded-xl">
-              <p className="text-sm text-cyan-800">💡 Speak naturally! I understand context and can help you navigate our website easily.</p>
+            <div className="mt-4 p-3 bg-brand-100 rounded-xl">
+              <p className="text-sm text-brand-600">💡 Speak naturally! I understand context and can help you navigate our website easily.</p>
             </div>
           </div>
         );
 
       case 'error':
         return (
-          <div className="bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl p-6 border border-red-200">
-            <h3 className="text-xl font-bold text-gray-800 mb-3">{response.title}</h3>
-            <p className="text-gray-600 mb-4">{response.message}</p>
-            <div className="bg-red-100 p-3 rounded-xl">
-              <p className="text-sm text-red-800">{response.suggestion}</p>
+          <div className=" bg-flame-50 rounded-2xl p-6 border border-flame-100">
+            <h3 className="text-xl font-bold text-ink-700 mb-3">{response.title}</h3>
+            <p className="text-ink-500 mb-4">{response.message}</p>
+            <div className="bg-flame-100 p-3 rounded-xl">
+              <p className="text-sm text-flame-700">{response.suggestion}</p>
             </div>
           </div>
         );
 
       case 'success':
         return (
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500 rounded-full mb-4">
+          <div className=" bg-brand-50 rounded-2xl p-6 border border-brand-100 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-brand rounded-full mb-4">
               <Sparkles className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">{response.title}</h3>
-            <p className="text-gray-600">{response.message}</p>
+            <h3 className="text-xl font-bold text-ink-700 mb-2">{response.title}</h3>
+            <p className="text-ink-500">{response.message}</p>
           </div>
         );
 
       default:
         return (
-          <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-6 border border-gray-200">
-            <h3 className="text-xl font-bold text-gray-800 mb-3">🤖 AI Voice Assistant</h3>
-            <p className="text-gray-600 mb-4">I can help you explore our AI-powered features and navigate the website!</p>
+          <div className=" bg-ink-50 rounded-2xl p-6 border border-ink-200">
+            <h3 className="text-xl font-bold text-ink-700 mb-3">🤖 AI Voice Assistant</h3>
+            <p className="text-ink-500 mb-4">I can help you explore our AI-powered features and navigate the website!</p>
             
             {/* Show quick feature preview */}
             <div className="grid grid-cols-2 gap-2 mb-4">
@@ -362,13 +362,13 @@ const VoiceAssistant: React.FC = () => {
                 <div key={index} className="bg-white p-3 rounded-lg shadow-sm text-center cursor-pointer hover:shadow-md transition-shadow"
                      onClick={() => handleNavigation(feature.route)}>
                   <div className="text-lg mb-1">{feature.icon}</div>
-                  <div className="text-xs font-medium text-gray-700">{feature.name}</div>
+                  <div className="text-xs font-medium text-ink-700">{feature.name}</div>
                 </div>
               ))}
             </div>
             
-            <div className="bg-gray-100 p-3 rounded-xl">
-              <p className="text-sm text-gray-700">💬 Try saying: "Show me all features" or "Go to conversation"</p>
+            <div className="bg-ink-100 p-3 rounded-xl">
+              <p className="text-sm text-ink-700">💬 Try saying: "Show me all features" or "Go to conversation"</p>
             </div>
           </div>
         );
@@ -392,7 +392,7 @@ const VoiceAssistant: React.FC = () => {
       {/* Floating Voice Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-full shadow-2xl hover:shadow-purple-500/30 transition-all duration-300 transform hover:scale-110 flex items-center justify-center z-50 animate-pulse"
+        className="fixed bottom-6 right-6 w-16 h-16 bg-brand hover:bg-brand-600 text-white rounded-full shadow-2xl hover:shadow-brand/30 transition-all duration-300 transform hover:scale-110 flex items-center justify-center z-50 animate-pulse"
       >
         <Headphones className="w-8 h-8" />
       </button>
@@ -402,22 +402,22 @@ const VoiceAssistant: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             {/* Header */}
-            <div className="p-6 border-b border-gray-200">
+            <div className="p-6 border-b border-ink-200">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-brand rounded-2xl flex items-center justify-center">
                     <MessageSquare className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-800">AI Voice Assistant</h2>
-                    <p className="text-gray-600">Speak naturally - I understand context!</p>
+                    <h2 className="text-2xl font-bold text-ink-700">AI Voice Assistant</h2>
+                    <p className="text-ink-500">Speak naturally - I understand context!</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
+                  className="w-10 h-10 bg-ink-100 hover:bg-ink-200 rounded-full flex items-center justify-center transition-colors"
                 >
-                  <X className="w-5 h-5 text-gray-600" />
+                  <X className="w-5 h-5 text-ink-500" />
                 </button>
               </div>
             </div>
@@ -426,17 +426,17 @@ const VoiceAssistant: React.FC = () => {
             <div className="p-6">
               {/* Transcript Display */}
               {transcript && (
-                <div className="mb-4 p-3 bg-gray-50 rounded-xl">
-                  <p className="text-sm text-gray-600 mb-1">You said:</p>
-                  <p className="text-gray-800 font-medium">"{transcript}"</p>
+                <div className="mb-4 p-3 bg-ink-50 rounded-xl">
+                  <p className="text-sm text-ink-500 mb-1">You said:</p>
+                  <p className="text-ink-700 font-medium">"{transcript}"</p>
                 </div>
               )}
 
               {/* Recording Status */}
               {recording && (
                 <div className="text-center mb-6">
-                  <div className="inline-flex items-center space-x-2 bg-red-50 text-red-600 px-6 py-3 rounded-full animate-pulse">
-                    <div className="w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
+                  <div className="inline-flex items-center space-x-2 bg-flame-50 text-flame px-6 py-3 rounded-full animate-pulse">
+                    <div className="w-3 h-3 bg-flame rounded-full animate-ping"></div>
                     <span className="font-semibold">Listening • {formatDuration(recordingDuration)}</span>
                   </div>
                 </div>
@@ -450,14 +450,14 @@ const VoiceAssistant: React.FC = () => {
                   className={`
                     relative w-24 h-24 rounded-full flex items-center justify-center transition-all duration-300 transform
                     ${recording 
-                      ? 'bg-gradient-to-br from-red-500 to-red-600 scale-110 shadow-xl shadow-red-500/30' 
-                      : 'bg-gradient-to-br from-purple-500 to-pink-500 hover:scale-105 shadow-xl shadow-purple-500/30'
+                      ? ' bg-flame scale-110 shadow-xl shadow-flame/30' 
+                      : ' bg-brand hover:scale-105 shadow-xl shadow-brand/30'
                     }
                     ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-2xl'}
                   `}
                 >
                   {recording && (
-                    <div className="absolute inset-0 rounded-full border-4 border-red-300 animate-ping"></div>
+                    <div className="absolute inset-0 rounded-full border-4 border-flame animate-ping"></div>
                   )}
                   
                   {loading ? (
@@ -472,10 +472,10 @@ const VoiceAssistant: React.FC = () => {
 
               {/* Instructions */}
               <div className="text-center mb-6">
-                <p className="text-gray-600 font-medium">
+                <p className="text-ink-500 font-medium">
                   {recording ? 'I\'m listening... Speak naturally!' : 'Click to start speaking'}
                 </p>
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-sm text-ink-500 mt-2">
                   Try: "What features do you have?" • "Take me to the conversation tool" • "Help me navigate"
                 </p>
               </div>
@@ -483,7 +483,7 @@ const VoiceAssistant: React.FC = () => {
               {/* Loading State */}
               {loading && (
                 <div className="text-center py-8">
-                  <div className="inline-flex items-center space-x-2 text-purple-600">
+                  <div className="inline-flex items-center space-x-2 text-brand-600">
                     <Loader2 className="w-5 h-5 animate-spin" />
                     <span>Processing your request...</span>
                   </div>

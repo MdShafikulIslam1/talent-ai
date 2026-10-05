@@ -223,7 +223,7 @@ export default function ElevenLabsVoiceAssistant() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-6 flex items-center justify-center">
+    <div className="min-h-screen bg-brand p-6 flex items-center justify-center">
       <div className="w-full max-w-2xl">
         <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-white border-opacity-20">
           <div className="text-center mb-12">
@@ -248,16 +248,16 @@ export default function ElevenLabsVoiceAssistant() {
                 disabled={loading}
                 className={`relative w-32 h-32 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center ${
                   recording
-                    ? "bg-gradient-to-br from-red-400 to-red-600 animate-pulse"
+                    ? " bg-flame animate-pulse"
                     : loading
-                    ? "bg-gradient-to-br from-gray-400 to-gray-600 cursor-not-allowed"
-                    : "bg-gradient-to-br from-white to-gray-100"
+                    ? " bg-ink-400 cursor-not-allowed"
+                    : " bg-white"
                 }`}
               >
                 {recording ? (
                   <MicOff className="w-12 h-12 text-white" />
                 ) : (
-                  <Mic className="w-12 h-12 text-purple-600" />
+                  <Mic className="w-12 h-12 text-brand-600" />
                 )}
 
                 {recording && (

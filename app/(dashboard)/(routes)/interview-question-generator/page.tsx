@@ -39,7 +39,7 @@ const InterviewQuestionGenerator = () => {
     setMessage("");
     setOriginalText(data.prompt);
     try {
-      const response = await axios.post("/api/grammar-correction", {
+      const response = await axios.post("/api/interview-questions", {
         text: data.prompt,
       });
       console.log("response: ", response);
@@ -59,11 +59,11 @@ const InterviewQuestionGenerator = () => {
   return (
     <div>
       <Heading
-        title="Grammar Correction"
-        description="Correct your grammar and spelling mistakes"
+        title="Interview Questions"
+        description="Practise for your next interview with questions and model answers"
         icon={MessageSquare}
-        iconColor="text-violet-500"
-        bgColor="bg-violet-500/10"
+        iconColor="text-brand"
+        bgColor="bg-brand/10"
       />
       <div className="px-4 lg:px-8 mb-8">
         <div>
@@ -81,7 +81,7 @@ const InterviewQuestionGenerator = () => {
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="How can I calculate the radius of the earth?"
+                        placeholder="e.g. Junior React developer, Product manager, Data analyst"
                         {...field}
                       />
                     </FormControl>
@@ -92,7 +92,7 @@ const InterviewQuestionGenerator = () => {
                 className="col-span-12 lg:col-span-2 w-full"
                 disabled={isLoading}
               >
-                {isLoading ? "Correcting..." : "Correct"}
+                {isLoading ? "Generating..." : "Generate"}
               </Button>
             </form>
           </Form>
@@ -107,24 +107,24 @@ const InterviewQuestionGenerator = () => {
           )}
           {/* show empty state if no conversation */}
           {!message && !isLoading && (
-            <Empty title="No conversation is started" />
+            <Empty title="Enter a role to get practice questions" />
           )}
 
           {message && originalText && (
-            <div className="p-4 border rounded-md bg-blue-50 space-y-4">
+            <div className="p-4 border rounded-md bg-brand-50 space-y-4">
               <div>
-                <h2 className="text-lg font-semibold mb-2 text-blue-800">
-                  Original Text:
+                <h2 className="text-lg font-semibold mb-2 text-brand-600">
+                  Role or topic:
                 </h2>
-                <p className="text-blue-700 whitespace-pre-wrap">
+                <p className="text-brand-600 whitespace-pre-wrap">
                   {originalText}
                 </p>
               </div>
               <div>
-                <h2 className="text-lg font-semibold mb-2 text-green-800">
-                  Correction Text:
+                <h2 className="text-lg font-semibold mb-2 text-brand-600">
+                  Questions:
                 </h2>
-                <p className="text-green-700 whitespace-pre-wrap">{message}</p>
+                <p className="text-ink-700 whitespace-pre-wrap leading-relaxed">{message}</p>
               </div>
             </div>
           )}

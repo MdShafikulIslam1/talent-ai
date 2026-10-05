@@ -19,6 +19,30 @@ const config = {
     },
     extend: {
       colors: {
+        // The whole palette: black (ink), violet (brand) and orange (flame), plus neutral greys.
+        ink: {
+          DEFAULT: "#111111",
+          700: "#3a3a3d",
+          500: "#5f5f64",
+          400: "#8b8b90",
+          300: "#b4b4b8",
+          200: "#e9e9eb",
+          100: "#f4f4f5",
+          50: "#fafafa",
+        },
+        brand: {
+          DEFAULT: "#7c5cfa",
+          600: "#6a48e8",
+          300: "#c4b5fd",
+          100: "#ece6ff",
+          50: "#f6f3ff",
+        },
+        flame: {
+          DEFAULT: "#ff6b1a",
+          700: "#c2410c",
+          100: "#ffe1cf",
+          50: "#fff4ec",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

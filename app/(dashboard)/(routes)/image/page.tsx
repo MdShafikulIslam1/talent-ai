@@ -65,8 +65,8 @@ const ImagePage = () => {
         title="Image Generation"
         description="generate your best image based on your configuration"
         icon={ImageIcon}
-        iconColor="text-pink-700"
-        bgColor="bg-pink-700/10"
+        iconColor="text-brand-600"
+        bgColor="bg-brand-600/10"
       />
       <div className="px-4 lg:px-8 mb-8">
         <div>

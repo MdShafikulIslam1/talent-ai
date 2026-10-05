@@ -55,7 +55,7 @@
 
 import { checkSubscription } from "@/lib/subscription";
 import { checkApiLimit, increaseApiLimit } from "@/lib/userApiLimit";
-import { client } from "@/lib/utils";
+import { client } from "@/lib/groq";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
@@ -162,7 +162,7 @@ function getOptimalSettings(messages: any[]) {
   // Use more powerful model for complex requests
   if (totalLength > 1000 || hasComplexKeywords) {
     return {
-      model: "llama3-70b-8192",
+      model: "openai/gpt-oss-120b",
       temperature: 0.3,
       max_tokens: 2500,
     };
@@ -170,7 +170,7 @@ function getOptimalSettings(messages: any[]) {
 
   // Use faster model for simple requests
   return {
-    model: "llama-3.1-8b-instant",
+    model: "openai/gpt-oss-20b",
     temperature: 0.2,
     max_tokens: 1500,
   };

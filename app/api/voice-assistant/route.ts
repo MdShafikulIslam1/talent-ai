@@ -1,6 +1,6 @@
 // app/api/voice-assistant/route.ts
 import { NextResponse } from "next/server";
-import { client } from "@/lib/utils"; // Your existing Groq client
+import { client } from "@/lib/groq"; // Your existing Groq client
 
 // TypeScript interfaces
 interface Route {

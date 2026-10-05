@@ -4,109 +4,61 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 271 91% 65%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 142 76% 36%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 271 91% 65%;
-    --radius: 0.75rem;
-  }
-
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 271 91% 65%;
-    --primary-foreground: 240 10% 3.9%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 142 76% 36%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 271 91% 65%;
-  }
-} */
-
-
-
 @layer base {
+  /* Three colours only: black (#111111), violet (#7c5cfa) and orange (#ff6b1a), plus neutral greys. */
   :root {
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: 0 0% 7%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 0 0% 7%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 346.8 77.2% 49.8%;
-    --primary-foreground: 355.7 100% 97.3%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 346.8 77.2% 49.8%;
-    --radius: 0.65rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --popover-foreground: 0 0% 7%;
+    --primary: 252 94% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 0 0% 7%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 3% 38%;
+    --accent: 254 100% 97%;
+    --accent-foreground: 0 0% 7%;
+    --destructive: 21 100% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 5% 92%;
+    --input: 240 5% 92%;
+    --ring: 252 94% 67%;
+    --radius: 0.75rem;
+    --chart-1: 252 94% 67%;
+    --chart-2: 21 100% 55%;
+    --chart-3: 0 0% 7%;
+    --chart-4: 252 95% 85%;
+    --chart-5: 22 100% 82%;
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 0 0% 95%;
-    --card: 24 9.8% 10%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 346.8 77.2% 49.8%;
-    --primary-foreground: 355.7 100% 97.3%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --background: 0 0% 7%;
+    --foreground: 0 0% 96%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 96%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 252 94% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 96%;
     --muted: 0 0% 15%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 346.8 77.2% 49.8%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --muted-foreground: 240 2% 55%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 96%;
+    --destructive: 21 100% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 252 94% 67%;
+    --chart-1: 252 94% 67%;
+    --chart-2: 21 100% 55%;
+    --chart-3: 0 0% 96%;
+    --chart-4: 252 95% 85%;
+    --chart-5: 22 100% 82%;
   }
 }
 
@@ -129,17 +81,17 @@
   }
   
   .gradient-hero {
-    background: linear-gradient(135deg, #8b5cf6 0%, #10b981 50%, #1f2937 100%);
+    background: #7c5cfa;
   }
   
   .gradient-card {
-    background: linear-gradient(145deg, rgba(139, 92, 246, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+    background: rgba(124, 92, 250, 0.06);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(139, 92, 246, 0.2);
+    border: 1px solid rgba(124, 92, 250, 0.2);
   }
   
   .gradient-text {
-    background: linear-gradient(125deg, #8b5cf6, #10b981);
+    background: #7c5cfa;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -191,7 +143,7 @@
   
   .hover-lift:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15);
+    box-shadow: 0 20px 40px rgba(124, 92, 250, 0.15);
   }
 }
 
@@ -202,10 +154,10 @@
 
 @keyframes glow {
   from { 
-    box-shadow: 0 0 5px rgba(139, 92, 246, 0.5), 0 0 10px rgba(16, 185, 129, 0.3); 
+    box-shadow: 0 0 5px rgba(124, 92, 250, 0.5), 0 0 10px rgba(124, 92, 250, 0.2); 
   }
   to { 
-    box-shadow: 0 0 10px rgba(139, 92, 246, 0.8), 0 0 15px rgba(16, 185, 129, 0.5); 
+    box-shadow: 0 0 10px rgba(124, 92, 250, 0.8), 0 0 15px rgba(124, 92, 250, 0.3); 
   }
 }
 
@@ -261,8 +213,8 @@
 
 .bg-grid-pattern {
   background-image: 
-    linear-gradient(to right, rgba(139, 92, 246, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
+    linear-gradient(to right, rgba(124, 92, 250, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(124, 92, 250, 0.1) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
@@ -278,14 +230,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e293b; /* slate-800 */
+  background: #262626;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #475569; /* slate-600 */
+  background: #5f5f64;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #64748b; /* slate-500 */
+  background: #8b8b90;
 }

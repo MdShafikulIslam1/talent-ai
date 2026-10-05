@@ -67,8 +67,8 @@ const SmartParaphraserPage = () => {
         title="Smart Paraphraser"
         description="Rephrase and simplify your text with clarity and precision"
         icon={Repeat}
-        iconColor="text-emerald-500"
-        bgColor="bg-emerald-500/10"
+        iconColor="text-brand"
+        bgColor="bg-brand/10"
       />
 
       <div className="px-4 lg:px-8 mb-8">
@@ -113,13 +113,13 @@ const SmartParaphraserPage = () => {
           )}
 
           {message && originalText && (
-            <div className="relative p-6 border rounded-xl bg-emerald-50 space-y-6 shadow-sm">
+            <div className="relative p-6 border rounded-xl bg-brand-50 space-y-6 shadow-sm">
               {/* Original Text */}
               <div>
-                <h2 className="text-lg font-bold mb-2 text-gray-800">
+                <h2 className="text-lg font-bold mb-2 text-ink-700">
                   ✏️ Original Text
                 </h2>
-                <p className="text-gray-700 whitespace-pre-wrap">
+                <p className="text-ink-700 whitespace-pre-wrap">
                   {originalText}
                 </p>
               </div>
@@ -128,21 +128,21 @@ const SmartParaphraserPage = () => {
               <div>
                 <button
                   onClick={handleCopy}
-                  className="absolute top-0 right-0 mt-3 mr-2 flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-sm font-medium px-4 py-2 rounded-full shadow-lg hover:scale-105 transition-transform duration-200 hover:from-emerald-600 hover:to-emerald-700 focus:outline-none"
+                  className="absolute top-0 right-0 mt-3 mr-2 flex items-center gap-2 bg-brand text-white text-sm font-medium px-4 py-2 rounded-full shadow-lg hover:scale-105 transition-transform duration-200 hover:bg-brand-600 focus:outline-none"
                 >
                   📋 <span>Copy</span>
                 </button>
 
                 {copied && (
-                  <span className="absolute top-0 right-24 mt-4 text-sm text-emerald-800 bg-white border border-emerald-300 px-3 py-1 rounded shadow transition-opacity duration-200">
+                  <span className="absolute top-0 right-24 mt-4 text-sm text-brand-600 bg-white border border-brand-300 px-3 py-1 rounded shadow transition-opacity duration-200">
                     ✅ Copied!
                   </span>
                 )}
 
-                <h2 className="text-lg font-bold mb-2 text-emerald-800">
+                <h2 className="text-lg font-bold mb-2 text-brand-600">
                   🔁 Paraphrased Version
                 </h2>
-                <p className="text-emerald-700 whitespace-pre-wrap">
+                <p className="text-brand-600 whitespace-pre-wrap">
                   {message}
                 </p>
               </div>

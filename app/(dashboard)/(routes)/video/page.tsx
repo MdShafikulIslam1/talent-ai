@@ -50,8 +50,8 @@ const VideoPage = () => {
         title="Video Generation"
         description="generate video you want to play"
         icon={Video}
-        iconColor="text-orange-700"
-        bgColor="bg-orange-700/10"
+        iconColor="text-flame-700"
+        bgColor="bg-flame-700/10"
       />
       <div className="px-4 lg:px-8 mb-8">
         <div>

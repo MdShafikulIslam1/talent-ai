@@ -59,8 +59,8 @@ const SentimentAnalyzerPage = () => {
         title="Sentiment Analyzer"
         description="Analyze your text to determine if it's Positive, Neutral, or Negative"
         icon={MessageCircle}
-        iconColor="text-yellow-500"
-        bgColor="bg-yellow-500/10"
+        iconColor="text-flame"
+        bgColor="bg-flame/10"
       />
 
       <div className="px-4 lg:px-8 mb-8">
@@ -105,27 +105,27 @@ const SentimentAnalyzerPage = () => {
           )}
 
           {sentiment && originalText && (
-            <div className="p-6 border rounded-xl bg-yellow-50 space-y-4 shadow-sm">
+            <div className="p-6 border rounded-xl bg-flame-50 space-y-4 shadow-sm">
               <div>
-                <h2 className="text-lg font-bold text-gray-800 mb-1">
+                <h2 className="text-lg font-bold text-ink-700 mb-1">
                   📝 Input Text
                 </h2>
-                <p className="text-gray-700 whitespace-pre-wrap">
+                <p className="text-ink-700 whitespace-pre-wrap">
                   {originalText}
                 </p>
               </div>
 
               <div>
-                <h2 className="text-lg font-bold text-yellow-800 mb-1">
+                <h2 className="text-lg font-bold text-flame-700 mb-1">
                   📊 Sentiment
                 </h2>
                 <p
                   className={`text-xl font-semibold ${
                     sentiment === "Positive"
-                      ? "text-green-600"
+                      ? "text-brand-600"
                       : sentiment === "Negative"
-                      ? "text-red-600"
-                      : "text-gray-600"
+                      ? "text-flame"
+                      : "text-ink-500"
                   }`}
                 >
                   {sentiment}

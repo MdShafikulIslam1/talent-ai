@@ -7,7 +7,7 @@ interface LoaderProps {
 const Loader = ({ isLoading }: LoaderProps) => {
   return (
     <div className="h-full flex flex-col justify-center items-center gap-y-4">
-      <GridLoader color="#7F00FF" loading={isLoading} />
+      <GridLoader color="#7c5cfa" loading={isLoading} />
       {/* <div className="w-8 h-8 relative animate-spin">
         <Image fill alt="loading..." src={"/logo.png"} />
       </div> */}

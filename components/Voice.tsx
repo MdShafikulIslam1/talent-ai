@@ -133,27 +133,27 @@ export default function VoiceToTextPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-4">
+    <div className="min-h-screen bg-brand-50 p-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl mb-4 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-flame rounded-2xl mb-4 shadow-lg">
             <Mic className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Voice to Text</h1>
-          <p className="text-gray-600 text-lg">
+          <h1 className="text-4xl font-bold text-ink-700 mb-2">Voice to Text</h1>
+          <p className="text-ink-500 text-lg">
             Record your voice and get instant AI-powered transcription
           </p>
         </div>
 
         {/* Main Recording Card */}
-        <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden mb-6">
+        <div className="bg-white rounded-3xl shadow-2xl border border-ink-100 overflow-hidden mb-6">
           <div className="p-8">
             {/* Recording Status */}
             <div className="text-center mb-8">
               {recording && (
-                <div className="inline-flex items-center space-x-2 bg-red-50 text-red-600 px-6 py-3 rounded-full mb-4 animate-pulse">
-                  <div className="w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
+                <div className="inline-flex items-center space-x-2 bg-flame-50 text-flame px-6 py-3 rounded-full mb-4 animate-pulse">
+                  <div className="w-3 h-3 bg-flame rounded-full animate-ping"></div>
                   <span className="font-semibold text-lg">Recording • {formatDuration(recordingDuration)}</span>
                 </div>
               )}
@@ -167,8 +167,8 @@ export default function VoiceToTextPage() {
                 className={`
                   relative w-40 h-40 rounded-full flex items-center justify-center transition-all duration-300 transform
                   ${recording 
-                    ? 'bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 scale-110 shadow-2xl shadow-red-500/30' 
-                    : 'bg-gradient-to-br from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 hover:scale-105 shadow-xl shadow-red-500/30'
+                    ? ' bg-flame hover:bg-flame scale-110 shadow-2xl shadow-flame/30' 
+                    : ' bg-flame hover:bg-flame hover:scale-105 shadow-xl shadow-flame/30'
                   }
                   ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-2xl'}
                 `}
@@ -176,8 +176,8 @@ export default function VoiceToTextPage() {
                 {/* Animated rings for recording */}
                 {recording && (
                   <>
-                    <div className="absolute inset-0 rounded-full border-4 border-red-300 animate-ping"></div>
-                    <div className="absolute inset-6 rounded-full border-2 border-red-200 animate-pulse"></div>
+                    <div className="absolute inset-0 rounded-full border-4 border-flame animate-ping"></div>
+                    <div className="absolute inset-6 rounded-full border-2 border-flame-100 animate-pulse"></div>
                   </>
                 )}
                 
@@ -190,10 +190,10 @@ export default function VoiceToTextPage() {
             </div>
 
             <div className="text-center">
-              <p className="text-gray-600 mb-2 text-lg font-medium">
+              <p className="text-ink-500 mb-2 text-lg font-medium">
                 {recording ? 'Click to stop recording' : 'Click to start recording'}
               </p>
-              <p className="text-gray-500">
+              <p className="text-ink-500">
                 Make sure your microphone is enabled for best results
               </p>
             </div>
@@ -202,14 +202,14 @@ export default function VoiceToTextPage() {
 
         {/* Audio Player and Controls */}
         {audioURL && (
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6 transform transition-all duration-500 hover:shadow-2xl">
+          <div className="bg-white rounded-2xl shadow-xl border border-ink-100 p-6 mb-6 transform transition-all duration-500 hover:shadow-2xl">
             <div className="flex items-center space-x-4 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-500 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-brand rounded-xl flex items-center justify-center">
                 <FileAudio className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800 text-lg">Recording Ready</h3>
-                <p className="text-gray-500">Duration: {formatDuration(recordingDuration)}</p>
+                <h3 className="font-semibold text-ink-700 text-lg">Recording Ready</h3>
+                <p className="text-ink-500">Duration: {formatDuration(recordingDuration)}</p>
               </div>
             </div>
 
@@ -217,13 +217,13 @@ export default function VoiceToTextPage() {
               <audio 
                 controls 
                 src={audioURL} 
-                className="w-full h-12 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="w-full h-12 rounded-lg focus:outline-none focus:ring-2 focus:ring-flame"
               />
               
               <button
                 onClick={handleTranscribe}
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                className="w-full bg-flame hover:bg-flame text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
               >
                 {loading ? (
                   <>
@@ -243,15 +243,15 @@ export default function VoiceToTextPage() {
 
         {/* Loading State */}
         {loading && (
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-6">
+          <div className="bg-white rounded-2xl shadow-xl border border-ink-100 p-8 mb-6">
             <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-brand rounded-2xl mb-4">
                 <Sparkles className="w-8 h-8 text-white animate-pulse" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">AI Processing Your Audio</h3>
-              <p className="text-gray-600 mb-4">Our advanced AI is converting your speech to text...</p>
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full animate-pulse" style={{width: '75%'}}></div>
+              <h3 className="text-xl font-semibold text-ink-700 mb-2">AI Processing Your Audio</h3>
+              <p className="text-ink-500 mb-4">Our advanced AI is converting your speech to text...</p>
+              <div className="w-full bg-ink-200 rounded-full h-3">
+                <div className=" bg-brand h-3 rounded-full animate-pulse" style={{width: '75%'}}></div>
               </div>
             </div>
           </div>
@@ -259,16 +259,16 @@ export default function VoiceToTextPage() {
 
         {/* Transcription Result */}
         {transcript && (
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 transform transition-all duration-500 hover:shadow-2xl">
+          <div className="bg-white rounded-2xl shadow-xl border border-ink-100 p-6 transform transition-all duration-500 hover:shadow-2xl">
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-brand rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">T</span>
               </div>
-              <h3 className="text-2xl font-semibold text-gray-800">AI Transcription Result</h3>
+              <h3 className="text-2xl font-semibold text-ink-700">AI Transcription Result</h3>
             </div>
             
-            <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-6 border-l-4 border-red-500 mb-6">
-              <p className="text-gray-800 leading-relaxed text-lg whitespace-pre-wrap">
+            <div className=" bg-ink-50 rounded-xl p-6 border-l-4 border-flame mb-6">
+              <p className="text-ink-700 leading-relaxed text-lg whitespace-pre-wrap">
                 {transcript}
               </p>
             </div>
@@ -276,21 +276,21 @@ export default function VoiceToTextPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <button
                 onClick={handleCopyText}
-                className="flex items-center justify-center space-x-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
+                className="flex items-center justify-center space-x-2 bg-brand-50 hover:bg-brand-100 text-brand-600 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
               >
                 <Copy className="w-4 h-4" />
                 <span>Copy Text</span>
               </button>
               <button
                 onClick={handleDownloadText}
-                className="flex items-center justify-center space-x-2 bg-green-50 hover:bg-green-100 text-green-700 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
+                className="flex items-center justify-center space-x-2 bg-brand-50 hover:bg-brand-100 text-brand-600 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
               >
                 <Download className="w-4 h-4" />
                 <span>Download</span>
               </button>
               <button
                 onClick={handleClear}
-                className="flex items-center justify-center space-x-2 bg-red-50 hover:bg-red-100 text-red-600 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
+                className="flex items-center justify-center space-x-2 bg-flame-50 hover:bg-flame-100 text-flame font-medium py-3 px-4 rounded-xl transition-colors duration-200"
               >
                 <Trash2 className="w-4 h-4" />
                 <span>Clear All</span>
@@ -300,9 +300,9 @@ export default function VoiceToTextPage() {
         )}
 
         {/* Tips Section */}
-        <div className="mt-8 bg-gradient-to-r from-red-50 to-pink-50 rounded-2xl p-6 border border-red-100">
-          <h4 className="font-semibold text-gray-800 mb-3 text-lg">💡 Tips for Better Transcription</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+        <div className="mt-8 bg-flame-50 rounded-2xl p-6 border border-flame-100">
+          <h4 className="font-semibold text-ink-700 mb-3 text-lg">💡 Tips for Better Transcription</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-ink-500">
             <ul className="space-y-2">
               <li>• Speak clearly and at a moderate pace</li>
               <li>• Minimize background noise</li>

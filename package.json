@@ -70,6 +70,7 @@
     "react-toastify": "^10.0.5",
     "recharts": "^2.12.7",
     "replicate": "^0.29.1",
+    "server-only": "^0.0.1",
     "sonner": "^2.0.3",
     "stripe": "^15.4.0",
     "tailwind-merge": "^2.5.2",

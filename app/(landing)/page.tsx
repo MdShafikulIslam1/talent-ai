@@ -1,30 +1,23 @@
-"use client";
-import { CTASection } from "@/components/CTASection";
-import { DemoSection } from "@/components/DemoSection";
-import { FAQSection } from "@/components/FAQSection";
-import { FeaturesSection } from "@/components/FeaturesSection";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import { HeroSection } from "@/components/HeroSection";
-import { PricingSection } from "@/components/PricingSection";
-import { TestimonialsSection } from "@/components/TestimonialsSection";
-
+import { Faq } from "@/components/home/faq";
+import { Hero } from "@/components/home/hero";
+import { HowItWorks } from "@/components/home/how-it-works";
+import { Pricing } from "@/components/home/pricing";
+import { SiteFooter } from "@/components/home/site-footer";
+import { SiteHeader } from "@/components/home/site-header";
+import { Tools } from "@/components/home/tools";
 
 const HomePage = () => {
   return (
-    <div className="h-full">
-      {/* <LandingNavbar />
-      <LandingHero />
-      <LandingContent /> */}
-      <Header />
-      <HeroSection />
-      <FeaturesSection />
-      <PricingSection />
-      <DemoSection />
-      <TestimonialsSection />
-      <FAQSection />
-      <CTASection />
-      <Footer />
+    <div className="min-h-full bg-white text-ink antialiased">
+      <SiteHeader />
+      <main>
+        <Hero />
+        <Tools />
+        <HowItWorks />
+        <Pricing />
+        <Faq />
+      </main>
+      <SiteFooter />
     </div>
   );
 };

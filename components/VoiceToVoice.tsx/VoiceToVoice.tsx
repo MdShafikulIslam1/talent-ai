@@ -480,17 +480,17 @@
 
 //   // ---------- Render UI ----------
 //   return (
-//     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-4">
+//     <div className="min-h-screen bg-brand-50 p-4">
 //       <div className="max-w-6xl mx-auto">
 //         {/* Header */}
 //         <div className="text-center mb-6">
-//           <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-purple-500 to-blue-600 rounded-2xl mb-3 shadow-lg">
+//           <div className="inline-flex items-center justify-center w-14 h-14 bg-brand rounded-2xl mb-3 shadow-lg">
 //             <MessageCircle className="w-6 h-6 text-white" />
 //           </div>
-//           <h1 className="text-3xl font-bold text-gray-800 mb-1">
+//           <h1 className="text-3xl font-bold text-ink-700 mb-1">
 //             Voice to Voice — Continuous Mode
 //           </h1>
-//           <p className="text-gray-600 text-sm">
+//           <p className="text-ink-500 text-sm">
 //             একটি বোতামে শুরু করুন — কথা বলুন, থামুন — AI উত্তর শুনুন — আবার
 //             বলুন। (Auto silence detection)
 //           </p>
@@ -500,8 +500,8 @@
 //             <div
 //               className={`px-3 py-1 rounded-full text-sm ${
 //                 listening
-//                   ? "bg-green-100 text-green-700"
-//                   : "bg-gray-100 text-gray-500"
+//                   ? "bg-brand-100 text-brand-600"
+//                   : "bg-ink-100 text-ink-500"
 //               }`}
 //             >
 //               {listening ? "Listening..." : "Not listening"}
@@ -509,8 +509,8 @@
 //             <div
 //               className={`px-3 py-1 rounded-full text-sm ${
 //                 processing
-//                   ? "bg-yellow-100 text-yellow-800"
-//                   : "bg-gray-100 text-gray-500"
+//                   ? "bg-flame-100 text-flame-700"
+//                   : "bg-ink-100 text-ink-500"
 //               }`}
 //             >
 //               {processing ? "AI Processing..." : "Idle"}
@@ -518,8 +518,8 @@
 //             <div
 //               className={`px-3 py-1 rounded-full text-sm ${
 //                 speaking
-//                   ? "bg-purple-100 text-purple-700"
-//                   : "bg-gray-100 text-gray-500"
+//                   ? "bg-brand-100 text-brand-600"
+//                   : "bg-ink-100 text-ink-500"
 //               }`}
 //             >
 //               {speaking ? "AI Speaking..." : "Silent"}
@@ -530,10 +530,10 @@
 //         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 //           {/* Main panel */}
 //           <div className="lg:col-span-2">
-//             <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 mb-6">
+//             <div className="bg-white rounded-3xl shadow-2xl border border-ink-100 p-6 mb-6">
 //               {/* Voice choices */}
 //               <div className="mb-4">
-//                 <label className="block text-sm font-medium text-gray-700 mb-2">
+//                 <label className="block text-sm font-medium text-ink-700 mb-2">
 //                   Choose AI Voice
 //                 </label>
 //                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -543,12 +543,12 @@
 //                       onClick={() => setVoice(v.id)}
 //                       className={`p-3 rounded-lg border transition-all duration-200 text-left ${
 //                         voice === v.id
-//                           ? "border-purple-500 bg-purple-50 text-purple-700"
-//                           : "border-gray-200 hover:border-gray-300 text-gray-700"
+//                           ? "border-brand bg-brand-50 text-brand-600"
+//                           : "border-ink-200 hover:border-ink-300 text-ink-700"
 //                       }`}
 //                     >
 //                       <div className="font-medium text-sm">{v.name}</div>
-//                       <div className="text-xs text-gray-500">
+//                       <div className="text-xs text-ink-500">
 //                         {v.description}
 //                       </div>
 //                     </button>
@@ -562,8 +562,8 @@
 //                   onClick={handleToggleMode}
 //                   className={`px-4 py-3 rounded-xl text-white font-semibold transition ${
 //                     modeActive
-//                       ? "bg-red-500 hover:bg-red-600"
-//                       : "bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+//                       ? "bg-flame hover:bg-flame"
+//                       : " bg-brand hover:bg-brand-600"
 //                   }`}
 //                 >
 //                   {modeActive
@@ -580,16 +580,16 @@
 //                       startListening();
 //                     }
 //                   }}
-//                   className="px-3 py-2 rounded-lg border bg-white hover:bg-gray-50"
+//                   className="px-3 py-2 rounded-lg border bg-white hover:bg-ink-50"
 //                 >
 //                   {listening ? (
 //                     <span className="flex items-center space-x-2">
-//                       <Square className="w-4 h-4 text-red-500" />
+//                       <Square className="w-4 h-4 text-flame" />
 //                       <span>Stop Listening</span>
 //                     </span>
 //                   ) : (
 //                     <span className="flex items-center space-x-2">
-//                       <Mic className="w-4 h-4 text-green-600" />
+//                       <Mic className="w-4 h-4 text-brand-600" />
 //                       <span>Listen Now</span>
 //                     </span>
 //                   )}
@@ -597,7 +597,7 @@
 
 //                 <button
 //                   onClick={handleClearHistory}
-//                   className="px-3 py-2 rounded-lg border bg-white hover:bg-gray-50"
+//                   className="px-3 py-2 rounded-lg border bg-white hover:bg-ink-50"
 //                 >
 //                   <History className="w-4 h-4 inline-block mr-2" /> Clear
 //                   History
@@ -605,7 +605,7 @@
 
 //                 <button
 //                   onClick={handleManualStop}
-//                   className="px-3 py-2 rounded-lg border bg-white hover:bg-gray-50"
+//                   className="px-3 py-2 rounded-lg border bg-white hover:bg-ink-50"
 //                 >
 //                   <Trash2 className="w-4 h-4 inline-block mr-2" /> Full Stop &
 //                   Cleanup
@@ -613,9 +613,9 @@
 //               </div>
 
 //               {/* Recording duration & small tips */}
-//               <div className="text-sm text-gray-500 mb-4">
+//               <div className="text-sm text-ink-500 mb-4">
 //                 Recording duration:{" "}
-//                 <span className="font-medium text-gray-700">
+//                 <span className="font-medium text-ink-700">
 //                   {formatDuration(recordingDuration)}
 //                 </span>
 //                 <span className="ml-4">
@@ -627,8 +627,8 @@
 //               {/* Input/Output blocks */}
 //               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 //                 {/* Input */}
-//                 <div className="bg-gray-50 rounded-xl p-4">
-//                   <h4 className="font-semibold text-gray-700 mb-2">
+//                 <div className="bg-ink-50 rounded-xl p-4">
+//                   <h4 className="font-semibold text-ink-700 mb-2">
 //                     Your Latest Recording
 //                   </h4>
 //                   {inputAudioURL ? (
@@ -636,22 +636,22 @@
 //                       <audio src={inputAudioURL} controls className="w-full" />
 //                     </div>
 //                   ) : (
-//                     <p className="text-sm text-gray-500">
+//                     <p className="text-sm text-ink-500">
 //                       No recording yet. Click Start and speak.
 //                     </p>
 //                   )}
 //                 </div>
 
 //                 {/* Output */}
-//                 <div className="bg-gray-50 rounded-xl p-4">
-//                   <h4 className="font-semibold text-gray-700 mb-2">
+//                 <div className="bg-ink-50 rounded-xl p-4">
+//                   <h4 className="font-semibold text-ink-700 mb-2">
 //                     AI Response
 //                   </h4>
 //                   {outputAudioURL ? (
 //                     <div>
 //                       <audio src={outputAudioURL} controls className="w-full" />
 //                       <div className="flex items-center justify-between mt-2">
-//                         <div className="text-sm text-gray-600">
+//                         <div className="text-sm text-ink-500">
 //                           {responseText || "AI response audio ready"}
 //                         </div>
 //                         <div className="flex items-center space-x-2">
@@ -665,7 +665,7 @@
 //                       </div>
 //                     </div>
 //                   ) : (
-//                     <p className="text-sm text-gray-500">
+//                     <p className="text-sm text-ink-500">
 //                       AI answer will appear here after processing.
 //                     </p>
 //                   )}
@@ -674,12 +674,12 @@
 //             </div>
 
 //             {/* Conversation history + transcript */}
-//             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
-//               <h3 className="font-semibold text-gray-800 mb-3">
+//             <div className="bg-white rounded-2xl shadow-xl border border-ink-100 p-6">
+//               <h3 className="font-semibold text-ink-700 mb-3">
 //                 Conversation History
 //               </h3>
 //               {conversationHistory.length === 0 ? (
-//                 <div className="text-sm text-gray-500">
+//                 <div className="text-sm text-ink-500">
 //                   No conversation yet.
 //                 </div>
 //               ) : (
@@ -689,19 +689,19 @@
 //                       key={i}
 //                       className={`p-3 rounded-lg ${
 //                         c.type === "user"
-//                           ? "bg-blue-50 border-l-4 border-blue-400"
-//                           : "bg-purple-50 border-l-4 border-purple-400"
+//                           ? "bg-brand-50 border-l-4 border-brand-300"
+//                           : "bg-brand-50 border-l-4 border-brand-300"
 //                       }`}
 //                     >
 //                       <div className="flex items-center justify-between mb-1">
 //                         <div className="text-xs font-medium">
 //                           {c.type === "user" ? "YOU" : "AI"}
 //                         </div>
-//                         <div className="text-xs text-gray-500">
+//                         <div className="text-xs text-ink-500">
 //                           {c.timestamp.toLocaleTimeString()}
 //                         </div>
 //                       </div>
-//                       <div className="text-sm text-gray-800">{c.text}</div>
+//                       <div className="text-sm text-ink-700">{c.text}</div>
 //                       {c.audioURL && (
 //                         <audio
 //                           className="w-full mt-2"
@@ -718,12 +718,12 @@
 
 //           {/* Sidebar tips & quick actions */}
 //           <div className="lg:col-span-1">
-//             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sticky top-4">
-//               <h3 className="font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-//                 <MessageCircle className="w-5 h-5 text-purple-600" />
+//             <div className="bg-white rounded-2xl shadow-xl border border-ink-100 p-6 sticky top-4">
+//               <h3 className="font-semibold text-ink-700 mb-3 flex items-center space-x-2">
+//                 <MessageCircle className="w-5 h-5 text-brand-600" />
 //                 <span>Tips</span>
 //               </h3>
-//               <ul className="text-sm text-gray-600 space-y-2">
+//               <ul className="text-sm text-ink-500 space-y-2">
 //                 <li>• Use quiet environment for better transcription.</li>
 //                 <li>
 //                   • Adjust <code>SILENCE_THRESHOLD</code> and{" "}
@@ -738,7 +738,7 @@
 
 //               <hr className="my-4" />
 
-//               <div className="text-sm text-gray-600">
+//               <div className="text-sm text-ink-500">
 //                 <div className="mb-2">
 //                   <strong>Quick Controls</strong>
 //                 </div>
@@ -773,7 +773,7 @@
 //         </div>
 
 //         {/* small footer */}
-//         <div className="mt-6 text-center text-sm text-gray-500">
+//         <div className="mt-6 text-center text-sm text-ink-500">
 //           Continuous conversation mode । Auto-detect silence and handle
 //           request/response loop.
 //         </div>

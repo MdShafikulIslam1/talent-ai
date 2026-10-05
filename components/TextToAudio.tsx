@@ -167,31 +167,31 @@ export default function TextToAudioPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-4">
+    <div className="min-h-screen bg-brand-50 p-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-brand rounded-2xl mb-4 shadow-lg">
             <Volume2 className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+          <h1 className="text-4xl font-bold text-ink-700 mb-2">
             Text to Audio
           </h1>
-          <p className="text-gray-600 text-lg">
+          <p className="text-ink-500 text-lg">
             Convert your text into natural-sounding speech with AI
           </p>
         </div>
 
         {/* Main Input Card */}
-        <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden mb-6">
+        <div className="bg-white rounded-3xl shadow-2xl border border-ink-100 overflow-hidden mb-6">
           <div className="p-8">
             {/* Text Input */}
             <div className="mb-6">
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-brand rounded-lg flex items-center justify-center">
                   <FileText className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800">
+                <h3 className="text-xl font-semibold text-ink-700">
                   Enter Your Text
                 </h3>
               </div>
@@ -201,10 +201,10 @@ export default function TextToAudioPage() {
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   placeholder="Type or paste your text here... (Maximum 4000 characters)"
-                  className="w-full h-40 p-4 border border-gray-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 leading-relaxed"
+                  className="w-full h-40 p-4 border border-ink-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent text-ink-700 leading-relaxed"
                   maxLength={4000}
                 />
-                <div className="absolute bottom-3 right-3 text-sm text-gray-400">
+                <div className="absolute bottom-3 right-3 text-sm text-ink-400">
                   {text.length}/4000
                 </div>
               </div>
@@ -214,7 +214,7 @@ export default function TextToAudioPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               {/* Voice Selection */}
               <div className="col-span-1 md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-sm font-medium text-ink-700 mb-3">
                   Choose Voice
                 </label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -224,12 +224,12 @@ export default function TextToAudioPage() {
                       onClick={() => setVoice(v.id)}
                       className={`p-3 rounded-lg border transition-all duration-200 text-left ${
                         voice === v.id
-                          ? "border-blue-500 bg-blue-50 text-blue-700"
-                          : "border-gray-200 hover:border-gray-300 text-gray-700"
+                          ? "border-brand bg-brand-50 text-brand-600"
+                          : "border-ink-200 hover:border-ink-300 text-ink-700"
                       }`}
                     >
                       <div className="font-medium text-sm">{v.name}</div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-ink-500">
                         {v.description}
                       </div>
                     </button>
@@ -239,7 +239,7 @@ export default function TextToAudioPage() {
 
               {/* Speed Selection */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-sm font-medium text-ink-700 mb-3">
                   Speech Speed
                 </label>
                 <div className="grid grid-cols-4 gap-2">
@@ -249,8 +249,8 @@ export default function TextToAudioPage() {
                       onClick={() => setSpeed(s.value)}
                       className={`p-3 rounded-lg border transition-all duration-200 text-center ${
                         speed === s.value
-                          ? "border-blue-500 bg-blue-50 text-blue-700"
-                          : "border-gray-200 hover:border-gray-300 text-gray-700"
+                          ? "border-brand bg-brand-50 text-brand-600"
+                          : "border-ink-200 hover:border-ink-300 text-ink-700"
                       }`}
                     >
                       <div className="font-medium text-sm">{s.label}</div>
@@ -264,7 +264,7 @@ export default function TextToAudioPage() {
             <button
               onClick={handleGenerateAudio}
               disabled={loading || !text.trim()}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              className="w-full bg-brand hover:bg-brand-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
             >
               {loading ? (
                 <>
@@ -283,20 +283,20 @@ export default function TextToAudioPage() {
 
         {/* Loading State */}
         {loading && (
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-6">
+          <div className="bg-white rounded-2xl shadow-xl border border-ink-100 p-8 mb-6">
             <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-brand rounded-2xl mb-4">
                 <Sparkles className="w-8 h-8 text-white animate-pulse" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              <h3 className="text-xl font-semibold text-ink-700 mb-2">
                 AI Processing Your Text
               </h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-ink-500 mb-4">
                 Our advanced AI is converting your text to speech...
               </p>
-              <div className="w-full bg-gray-200 rounded-full h-3">
+              <div className="w-full bg-ink-200 rounded-full h-3">
                 <div
-                  className="bg-gradient-to-r from-purple-500 to-blue-500 h-3 rounded-full animate-pulse"
+                  className=" bg-brand h-3 rounded-full animate-pulse"
                   style={{ width: "75%" }}
                 ></div>
               </div>
@@ -306,16 +306,16 @@ export default function TextToAudioPage() {
 
         {/* Audio Player */}
         {audioURL && (
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6 transform transition-all duration-500 hover:shadow-2xl">
+          <div className="bg-white rounded-2xl shadow-xl border border-ink-100 p-6 mb-6 transform transition-all duration-500 hover:shadow-2xl">
             <div className="flex items-center space-x-4 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-500 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-brand rounded-xl flex items-center justify-center">
                 <Volume2 className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800 text-lg">
+                <h3 className="font-semibold text-ink-700 text-lg">
                   Generated Audio
                 </h3>
-                <p className="text-gray-500">
+                <p className="text-ink-500">
                   Voice: {voices.find((v) => v.id === voice)?.name} • Speed:{" "}
                   {speed}x
                 </p>
@@ -339,14 +339,14 @@ export default function TextToAudioPage() {
               <div className="flex items-center space-x-4">
                 <button
                   onClick={handleReset}
-                  className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors"
+                  className="p-2 rounded-lg bg-ink-100 hover:bg-ink-200 text-ink-500 transition-colors"
                 >
                   <RotateCcw className="w-4 h-4" />
                 </button>
 
                 <button
                   onClick={handlePlayPause}
-                  className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-105"
+                  className="w-12 h-12 bg-brand hover:bg-brand-600 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-105"
                 >
                   {isPlaying ? (
                     <Pause className="w-5 h-5" />
@@ -362,11 +362,11 @@ export default function TextToAudioPage() {
                     max={duration || 0}
                     value={currentTime}
                     onChange={handleSeek}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                    className="w-full h-2 bg-ink-200 rounded-lg appearance-none cursor-pointer slider"
                   />
                 </div>
 
-                <div className="text-sm text-gray-500 min-w-[80px] text-right">
+                <div className="text-sm text-ink-500 min-w-[80px] text-right">
                   {formatTime(currentTime)} / {formatTime(duration)}
                 </div>
               </div>
@@ -375,21 +375,21 @@ export default function TextToAudioPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-6">
                 <button
                   onClick={handleCopyText}
-                  className="flex items-center justify-center space-x-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
+                  className="flex items-center justify-center space-x-2 bg-brand-50 hover:bg-brand-100 text-brand-600 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
                 >
                   <Copy className="w-4 h-4" />
                   <span>Copy Text</span>
                 </button>
                 <button
                   onClick={handleDownloadAudio}
-                  className="flex items-center justify-center space-x-2 bg-green-50 hover:bg-green-100 text-green-700 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
+                  className="flex items-center justify-center space-x-2 bg-brand-50 hover:bg-brand-100 text-brand-600 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
                 >
                   <Download className="w-4 h-4" />
                   <span>Download Audio</span>
                 </button>
                 <button
                   onClick={handleClear}
-                  className="flex items-center justify-center space-x-2 bg-red-50 hover:bg-red-100 text-red-600 font-medium py-3 px-4 rounded-xl transition-colors duration-200"
+                  className="flex items-center justify-center space-x-2 bg-flame-50 hover:bg-flame-100 text-flame font-medium py-3 px-4 rounded-xl transition-colors duration-200"
                 >
                   <Trash2 className="w-4 h-4" />
                   <span>Clear All</span>
@@ -400,11 +400,11 @@ export default function TextToAudioPage() {
         )}
 
         {/* Tips Section */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 border border-blue-100">
-          <h4 className="font-semibold text-gray-800 mb-3 text-lg">
+        <div className=" bg-brand-50 rounded-2xl p-6 border border-brand-100">
+          <h4 className="font-semibold text-ink-700 mb-3 text-lg">
             💡 Tips for Better Audio Generation
           </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-ink-500">
             <ul className="space-y-2">
               <li>• Use proper punctuation for natural pauses</li>
               <li>• Break long sentences into shorter ones</li>
@@ -425,7 +425,7 @@ export default function TextToAudioPage() {
           width: 16px;
           height: 16px;
           border-radius: 50%;
-          background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+          background: #7c5cfa;
           cursor: pointer;
           border: 2px solid white;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -435,7 +435,7 @@ export default function TextToAudioPage() {
           width: 16px;
           height: 16px;
           border-radius: 50%;
-          background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+          background: #7c5cfa;
           cursor: pointer;
           border: 2px solid white;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

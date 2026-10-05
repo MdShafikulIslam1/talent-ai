@@ -11,7 +11,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="h-full relative">
       {/* side bar */}
-      <div className="hidden md:h-full md:flex md:flex-col md:w-72 md:fixed md:inset-y-0 md:bg-gray-900">
+      <div className="hidden md:h-full md:flex md:flex-col md:w-72 md:fixed md:inset-y-0 md:bg-ink">
         <div className="flex-1 overflow-y-auto">
           <Sidebar apiLimitCount={apiLimitCount} isPro={isPro} />
         </div>

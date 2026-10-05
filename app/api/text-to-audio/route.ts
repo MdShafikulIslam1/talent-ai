@@ -4,7 +4,7 @@
 import { voices } from "@/const";
 import { checkSubscription } from "@/lib/subscription";
 import { checkApiLimit, increaseApiLimit } from "@/lib/userApiLimit";
-import { client } from "@/lib/utils"; // Using your existing Groq client
+import { client } from "@/lib/groq"; // Using your existing Groq client
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 

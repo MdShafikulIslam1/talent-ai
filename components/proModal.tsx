@@ -44,7 +44,7 @@
 //               </Badge>
 //             </div>
 //           </DialogTitle>
-//           <DialogDescription className="space-y-2 pt-2 text-center font-medium text-zinc-900">
+//           <DialogDescription className="space-y-2 pt-2 text-center font-medium text-ink">
 //             {tools.map((tool) => (
 //               <Card
 //                 key={tool.href}
@@ -103,7 +103,7 @@ const proPlan = {
   price: "$20",
   description: "Ideal for professionals and creators",
   icon: Zap,
-  gradient: "from-purple-500 to-pink-500",
+  gradient: "bg-brand",
   features: [
     "Unlimited AI generations",
     "Advanced image & video tools",
@@ -142,7 +142,7 @@ const ProModal = () => {
             Upgrade to Pro
           </DialogTitle>
           <div className="flex justify-center mt-2">
-            <div className="bg-gradient-to-r from-primary to-accent text-white px-4 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+            <div className=" bg-primary text-white px-4 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
               <Rocket className="w-4 h-4 animate-wiggle" />
               Most Popular
             </div>
@@ -152,7 +152,7 @@ const ProModal = () => {
         <Card className="relative overflow-hidden">
           <CardHeader className="text-center pb-4">
             <div className="mb-4">
-              <div className={`p-4 rounded-2xl bg-gradient-to-r ${proPlan.gradient} w-fit mx-auto`}>
+              <div className={`p-4 rounded-2xl ${proPlan.gradient} w-fit mx-auto`}>
                 <Icon className="w-6 h-6 text-white" />
               </div>
             </div>
@@ -172,7 +172,7 @@ const ProModal = () => {
             <ul className="space-y-2">
               {proPlan.features.map((feature, i) => (
                 <li key={i} className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                  <div className="w-4 h-4 bg-primary rounded-full flex items-center justify-center">
                     <Check className="w-3 h-3 text-white" />
                   </div>
                   <span className="text-muted-foreground text-sm">{feature}</span>
@@ -183,7 +183,7 @@ const ProModal = () => {
             <Button
               disabled={isLoading}
               onClick={onSubscription}
-              className="w-full text-sm py-4 font-semibold rounded-lg bg-gradient-to-r from-primary to-accent text-white hover:scale-105 transition"
+              className="w-full text-sm py-4 font-semibold rounded-lg bg-primary text-white hover:scale-105 transition"
             >
               {isLoading ? "Redirecting..." : proPlan.buttonText}
               <Zap className="w-4 h-4 ml-2" />

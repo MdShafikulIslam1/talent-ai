@@ -12,8 +12,8 @@ const SettingPage = async () => {
         title="Settings"
         description="Manage your account"
         icon={Settings}
-        iconColor="text-green-700"
-        bgColor="bg-green-700/10"
+        iconColor="text-brand-600"
+        bgColor="bg-brand-600/10"
       />
       <div className="px-4 lg:px-8 space-y-4">
         <div className="text-muted-foreground text-sm">

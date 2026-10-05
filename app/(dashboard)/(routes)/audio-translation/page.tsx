@@ -79,8 +79,8 @@
 //         title="Audio Translation"
 //         description="Upload your audio file and choose language for translation"
 //         icon={Languages}
-//         iconColor="text-blue-700"
-//         bgColor="bg-blue-700/10"
+//         iconColor="text-brand-600"
+//         bgColor="bg-brand-600/10"
 //       />
 //       <div className="px-4 lg:px-8 mb-8">
 //         <div>
@@ -100,7 +100,7 @@
 //                         accept="audio/*"
 //                         disabled={isLoading}
 //                         {...field}
-//                         className="cursor-pointer border-dashed border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+//                         className="cursor-pointer border-dashed border-2 border-ink-300 hover:border-brand hover:bg-brand-50 transition-all duration-200 rounded-lg px-4 py-2 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-brand-600 file:text-white hover:file:bg-brand-600"
 //                       />
 //                     </FormControl>
 //                   </FormItem>
@@ -111,12 +111,12 @@
 //                 render={({ field }) => (
 //                   <FormItem className="col-span-12 lg:col-span-6">
 //                     <FormControl>
-//                       <div className="flex items-center h-full w-full border-2 border-dashed border-gray-300 rounded-lg px-4 py-2 hover:border-blue-500 transition duration-200">
+//                       <div className="flex items-center h-full w-full border-2 border-dashed border-ink-300 rounded-lg px-4 py-2 hover:border-brand transition duration-200">
 //                         <Input
 //                           type="file"
 //                           accept="audio/*"
 //                           disabled={isLoading}
-//                           className="cursor-pointer w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+//                           className="cursor-pointer w-full text-sm text-ink-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-600 file:text-white hover:file:bg-brand-600"
 //                           {...field}
 //                           onChange={handleAudioFileChange}
 //                         />
@@ -234,6 +234,8 @@ const AudioPage = () => {
   const proModal = userProModal();
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
+  const [result, setResult] = useState<{ transcript: string; translation: string; language: string } | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -259,28 +261,24 @@ const AudioPage = () => {
       return;
     }
     try {
+      setError(null);
+      setResult(null);
       const formData = new FormData();
-      formData.append("file", file); // Assuming single file upload
+      formData.append("file", file);
       formData.append("language", data.language);
-      const response = await axios.post(
-        "https://audio-translation-backend.onrender.com/audio-to-text-translate",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log("response of audio translation", response.data);
-      form.reset(); // Reset form after successful submission
-      setFile(null); // Clear file state
+      // Our own API route: Groq Whisper transcribes, then the chat model translates.
+      const response = await axios.post("/api/audio-translation", formData);
+      setResult(response.data);
     } catch (error: any) {
       if (error?.response?.status === 403) {
         proModal.onOpen();
       } else {
         console.error("Error occurred during audio translation:", error);
-        // Show an error message in the UI if needed
+        setError(
+          typeof error?.response?.data === "string"
+            ? error.response.data
+            : "Something went wrong. Please try again."
+        );
       }
     } finally {
       router.refresh();
@@ -293,8 +291,8 @@ const AudioPage = () => {
         title="Speech Translation"
         description="Upload your audio file and choose language for translation"
         icon={Languages}
-        iconColor="text-blue-700"
-        bgColor="bg-blue-700/10"
+        iconColor="text-brand-600"
+        bgColor="bg-brand-600/10"
       />
       <div className="px-4 lg:px-8 mb-8">
         <div>
@@ -309,12 +307,12 @@ const AudioPage = () => {
                 render={({ field }) => (
                   <FormItem className="col-span-12 lg:col-span-6">
                     <FormControl>
-                      <div className="flex items-center h-full w-full border-2 border-dashed border-gray-300 rounded-lg px-4 py-2 hover:border-blue-500 transition duration-200">
+                      <div className="flex items-center h-full w-full border-2 border-dashed border-ink-300 rounded-lg px-4 py-2 hover:border-brand transition duration-200">
                         <Input
                           type="file"
                           accept="audio/mpeg, audio/wav, audio/*"
                           disabled={isLoading}
-                          className="cursor-pointer w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+                          className="cursor-pointer w-full text-sm text-ink-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-600 file:text-white hover:file:bg-brand-600"
                           {...field}
                           onChange={handleAudioFileChange}
                         />
@@ -368,6 +366,23 @@ const AudioPage = () => {
           {isLoading && (
             <div className="p-8 w-full rounded-lg flex items-center justify-center bg-muted">
               <Loader isLoading={isLoading} />
+            </div>
+          )}
+
+          {error && !isLoading && (
+            <div className="rounded-lg border border-flame-100 bg-flame-50 p-4 text-sm text-flame-700">{error}</div>
+          )}
+
+          {result && !isLoading && (
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="rounded-lg border p-5">
+                <p className="text-xs font-semibold uppercase tracking-wide text-ink-400">What was said</p>
+                <p className="mt-2 whitespace-pre-wrap leading-relaxed text-ink-700">{result.transcript}</p>
+              </div>
+              <div className="rounded-lg border border-brand-100 bg-brand-50 p-5">
+                <p className="text-xs font-semibold uppercase tracking-wide text-brand">{result.language}</p>
+                <p className="mt-2 whitespace-pre-wrap leading-relaxed text-ink">{result.translation}</p>
+              </div>
             </div>
           )}
         </div>
