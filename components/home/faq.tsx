@@ -4,7 +4,7 @@ import { MAX_FREE_COUNT } from "@/constant";
 const faqs = [
   {
     q: "Which AI models power the tools?",
-    a: "The text tools run on Meta's Llama 3.1 through Groq, so answers come back fast. Speech to text uses Whisper.",
+    a: "The text tools run on OpenAI's open-weight GPT-OSS models, served by Groq, so answers come back fast. Speech to text uses Whisper.",
   },
   {
     q: "What's included for free?",

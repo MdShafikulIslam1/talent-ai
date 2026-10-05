@@ -78,7 +78,7 @@ function Showcase() {
               </span>
               <span className="text-sm font-semibold text-ink">Conversation</span>
             </div>
-            <span className="rounded-full bg-ink-100 px-3 py-1 text-xs font-medium text-ink-400">Llama 3.1</span>
+            <span className="rounded-full bg-ink-100 px-3 py-1 text-xs font-medium text-ink-400">GPT-OSS</span>
           </div>
 
           <div className="space-y-4 px-5 py-6 text-left md:px-8">
