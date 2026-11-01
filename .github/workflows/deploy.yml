@@ -1,0 +1,114 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.repository }}
+  cancel-in-progress: false
+
+env:
+  PROJECT: talentai # server dir /srv/apps/<PROJECT>, image <owner>/<PROJECT>-app
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image: ${{ steps.name.outputs.image }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Image name
+        id: name
+        run: echo "image=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${PROJECT}-app" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ steps.name.outputs.image }}:${{ github.sha }}
+            ${{ steps.name.outputs.image }}:latest
+          labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
+          build-args: |
+            NEXT_PUBLIC_APP_URL=https://${{ vars.APP_DOMAIN }}
+            NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ vars.CLERK_PUBLISHABLE_KEY }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: deploy
+
+      - name: Set up SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+
+      - name: Deploy to VPS
+        env:
+          SSH_TARGET: ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+          IMAGE: ${{ needs.build.outputs.image }}
+          TAG: ${{ github.sha }}
+        run: |
+          APP_DIR="/srv/apps/$PROJECT"
+          scp deploy/compose.yml "$SSH_TARGET:$APP_DIR/compose.yml"
+
+          # Token goes over stdin (line 1); the script itself is the rest of stdin.
+          # A private DOCKER_CONFIG per run means another project's deploy can't log us out mid-pull.
+          { printf '%s\n' "$GHCR_TOKEN"; cat <<'EOF'; } | ssh "$SSH_TARGET" "APP_DIR=$APP_DIR TAG=$TAG IMAGE=$IMAGE GHCR_USER=$GHCR_USER bash -c 'read -r GHCR_TOKEN; export GHCR_TOKEN; bash -s'"
+          set -euo pipefail
+          export DOCKER_CONFIG="$(mktemp -d)"
+          trap 'rm -rf "$DOCKER_CONFIG"' EXIT
+          printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+          unset GHCR_TOKEN
+
+          cd "$APP_DIR"
+          # Keep .env's image in sync with what CI built (owner/case can't drift)
+          for kv in "APP_IMAGE=$IMAGE" "IMAGE_TAG=$TAG"; do
+            k="${kv%%=*}"
+            if grep -q "^$k=" .env; then sed -i "s|^$k=.*|$kv|" .env; else echo "$kv" >> .env; fi
+          done
+
+          docker compose pull
+          docker compose up -d --wait --wait-timeout 120 --remove-orphans
+          docker image prune -f
+          docker compose ps
+          EOF
+
+      - name: Smoke test
+        run: |
+          for i in 1 2 3 4 5 6; do
+            curl -fsS -o /dev/null "https://${{ vars.APP_DOMAIN }}/api/health" \
+              && curl -fsS -o /dev/null "https://${{ vars.APP_DOMAIN }}" \
+              && { echo "Site is up"; exit 0; }
+            sleep 10
+          done
+          echo "::error::https://${{ vars.APP_DOMAIN }} did not respond"; exit 1

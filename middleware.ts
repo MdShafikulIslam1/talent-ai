@@ -5,6 +5,7 @@ export default authMiddleware({
   publicRoutes: [
     "/",
     "/api/webhook",
+    "/api/health",
     "/sign-in(.*)",
     "/sign-up(.*)",
     "/opengraph-image(.*)",
